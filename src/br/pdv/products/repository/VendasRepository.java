@@ -68,6 +68,6 @@ public class VendasRepository implements IVendasRepository{
 
     @Override
     public Collection<Venda> listarVendas() {
-        return null;
+        return vendasCadastradas;
     }
 }

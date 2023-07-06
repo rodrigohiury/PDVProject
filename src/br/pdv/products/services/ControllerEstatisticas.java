@@ -4,63 +4,61 @@ import br.pdv.products.data.caixa.Caixa;
 import br.pdv.products.data.produto.Produto;
 import br.pdv.products.data.venda.Venda;
 import br.pdv.products.exceptions.CaixaInexistenteException;
-import br.pdv.products.exceptions.CaixaInvalidoException;
-import br.pdv.products.repository.ICaixaRepository;
+import br.pdv.products.exceptions.VendaInexistenteException;
+import br.pdv.products.exceptions.VendaInvalidaException;
+import br.pdv.products.repository.IVendasRepository;
 
 import java.time.Instant;
 import java.util.*;
 
 public class ControllerEstatisticas {
 
-    private ICaixaRepository repCaixa;
+    private IVendasRepository reporitorioVendas;
 
-    public ControllerEstatisticas(ICaixaRepository repCaixa) {
-        this.repCaixa = repCaixa;
+    public ControllerEstatisticas(IVendasRepository repositorioVendas) {
+        this.reporitorioVendas = repositorioVendas;
     }
 
-    public void inserirCaixa(Caixa caixa) throws CaixaInvalidoException {
-        if (caixa != null){
-            repCaixa.inserirCaixa(caixa);
+    public void inserirCaixa(Venda venda) throws VendaInvalidaException {
+        if (venda != null){
+            reporitorioVendas.inserir(venda);
         } else {
-            throw new CaixaInvalidoException();
+            throw new VendaInvalidaException();
         }
     }
 
-    public void removerCaixa(Caixa caixa) throws CaixaInexistenteException, CaixaInvalidoException {
-        if (caixa != null){
-            if (repCaixa.buscarCaixa(caixa.getDataAbertura()) != null){
-                repCaixa.removerCaixa(caixa);
-            } else throw new CaixaInexistenteException();
-        } else throw new CaixaInvalidoException();
+    public void removerVenda(Venda venda) throws VendaInvalidaException, VendaInexistenteException {
+        if (venda != null){
+            if (reporitorioVendas.buscarVenda(venda.getNumero()) != null){
+                reporitorioVendas.remover(venda);
+            } else throw new VendaInexistenteException();
+        } else throw new VendaInvalidaException();
     }
 
-    public void alterarCaixa(Caixa caixa) throws CaixaInvalidoException, CaixaInexistenteException {
-        if (caixa != null){
-            Caixa caixaAnterior = repCaixa.buscarCaixa(caixa.getDataAbertura());
-            if (caixaAnterior != null){
-                repCaixa.alterarCaixa(caixa);
-            } else throw new CaixaInexistenteException();
-        } else throw new CaixaInvalidoException();
+    public void alterarVenda(Venda venda) throws VendaInvalidaException, VendaInexistenteException {
+        if (venda != null){
+            Venda vendaAnterior = reporitorioVendas.buscarVenda(venda.getNumero());
+            if (vendaAnterior != null){
+                reporitorioVendas.alterarVenda(venda);
+            } else throw new VendaInexistenteException();
+        } else throw new VendaInvalidaException();
     }
 
-    public Caixa buscarCaixa(Calendar data) throws CaixaInexistenteException, NullPointerException {
-        if (data != null){
-            Caixa caixa = repCaixa.buscarCaixa(data);
-            if (caixa != null){
-                return caixa;
-            } else throw new CaixaInexistenteException();
-        } else throw new NullPointerException();
+    public Venda buscarVenda(int numero) throws VendaInexistenteException, VendaInvalidaException {
+        if (numero > 0){
+            Venda venda = reporitorioVendas.buscarVenda(numero);
+            if (venda != null){
+                return venda;
+            } else throw new VendaInexistenteException();
+        } else throw new VendaInvalidaException();
     }
 
     public float getFaturamentoTotal() {
         float faturamento = 0.0f;
-        for (Caixa caixa:
-                repCaixa.listarCaixas()) {
-            for (Venda venda :
-                    caixa.getVendasDoDia()) {
-                if (isVenda(venda)){
-                    faturamento += venda.getValorPago();
-                }
+        for (Venda venda :
+                reporitorioVendas.listarVendas()) {
+            if (isVenda(venda)){
+                faturamento += venda.getValorPago();
             }
         }
         return faturamento;
@@ -68,15 +66,10 @@ public class ControllerEstatisticas {
 
     public float getFaturamentoDia(Calendar data) {
         float faturamento = 0.0f;
-        for (Caixa caixa:
-                repCaixa.listarCaixas()) {
-            if (isSameDay(caixa.getDataAbertura(), data)){
-                for (Venda venda:
-                        caixa.getVendasDoDia()) {
-                    if (isVenda(venda)){
-                        faturamento += venda.getValorPago();
-                    }
-                }
+        for (Venda venda:
+                reporitorioVendas.buscarVendas(data)) {
+            if (isVenda(venda)){
+                faturamento += venda.getValorPago();
             }
         }
         return faturamento;
@@ -84,20 +77,17 @@ public class ControllerEstatisticas {
 
     public float getLucroTotal() {
         float precoVenda, precoCusto, quantidade, lucroUnit, lucro = 0.0f;
-        for (Caixa caixa:
-                repCaixa.listarCaixas()) {
-            for (Venda venda:
-                    caixa.getVendasDoDia()) {
-                if (isVenda(venda)){
-                    Set<Produto> produtos = venda.getCarrinho().keySet();
-                    for (Produto produto:
-                         produtos) {
-                        precoVenda = produto.getPrecoVenda();
-                        precoCusto = produto.getPrecoCusto();
-                        quantidade = venda.getCarrinho().get(produto);
-                        lucroUnit = (precoVenda - precoCusto) * quantidade;
-                        lucro += lucroUnit;
-                    }
+        for (Venda venda:
+                reporitorioVendas.listarVendas()) {
+            if (isVenda(venda)){
+                Set<Produto> produtos = venda.getCarrinho().keySet();
+                for (Produto produto:
+                     produtos) {
+                    precoVenda = produto.getPrecoVenda();
+                    precoCusto = produto.getPrecoCusto();
+                    quantidade = venda.getCarrinho().get(produto);
+                    lucroUnit = (precoVenda - precoCusto) * quantidade;
+                    lucro += lucroUnit;
                 }
             }
         }
@@ -106,23 +96,20 @@ public class ControllerEstatisticas {
 
     public float getLucroMensal() {
         float precoVenda, precoCusto, quantidade, lucroUnit, lucro = 0.0f;
-        for (Caixa caixa:
-                repCaixa.listarCaixas()) {
-            Calendar hoje = new GregorianCalendar();
-            hoje.setTime(Date.from(Instant.now()));
-            if (isSameMonth(caixa.getDataAbertura(), hoje)){
-                for (Venda venda:
-                        caixa.getVendasDoDia()) {
-                    if (isVenda(venda)){
-                        Set<Produto> produtos = venda.getCarrinho().keySet();
-                        for (Produto produto:
-                                produtos) {
-                            precoVenda = produto.getPrecoVenda();
-                            precoCusto = produto.getPrecoCusto();
-                            quantidade = venda.getCarrinho().get(produto);
-                            lucroUnit = (precoVenda - precoCusto) * quantidade;
-                            lucro += lucroUnit;
-                        }
+        Calendar hoje = new GregorianCalendar();
+        hoje.setTime(Date.from(Instant.now()));
+        for (Venda venda:
+                reporitorioVendas.listarVendas()) {
+            if (isSameMonth(venda.getDataCompra(), hoje)) {
+                if (isVenda(venda)) {
+                    Set<Produto> produtos = venda.getCarrinho().keySet();
+                    for (Produto produto :
+                            produtos) {
+                        precoVenda = produto.getPrecoVenda();
+                        precoCusto = produto.getPrecoCusto();
+                        quantidade = venda.getCarrinho().get(produto);
+                        lucroUnit = (precoVenda - precoCusto) * quantidade;
+                        lucro += lucroUnit;
                     }
                 }
             }
@@ -136,12 +123,10 @@ public class ControllerEstatisticas {
 
     public int getNumeroVendasTotal() {
         int numeroVendas = 0;
-        for (Caixa caixa : repCaixa.listarCaixas()) {
-            for (Venda venda:
-                    caixa.getVendasDoDia()) {
-                if (isVenda(venda)){
-                    numeroVendas++;
-                }
+        for (Venda venda:
+                reporitorioVendas.listarVendas()) {
+            if (isVenda(venda)){
+                numeroVendas++;
             }
         }
         return numeroVendas;
@@ -149,15 +134,13 @@ public class ControllerEstatisticas {
 
     public int getNumeroVendasMensal() {
         int numeroVendas = 0;
-        for (Caixa caixa : repCaixa.listarCaixas()) {
-            Calendar hoje = new GregorianCalendar();
-            hoje.setTime(Date.from(Instant.now()));
-            if (isSameMonth(caixa.getDataAbertura(), hoje)){
-                for (Venda venda:
-                        caixa.getVendasDoDia()) {
-                    if (isVenda(venda)){
-                        numeroVendas++;
-                    }
+        Calendar hoje = new GregorianCalendar();
+        hoje.setTime(Date.from(Instant.now()));
+        for (Venda venda:
+                reporitorioVendas.listarVendas()) {
+            if (isSameMonth(venda.getDataCompra(), hoje)) {
+                if (isVenda(venda)) {
+                    numeroVendas++;
                 }
             }
         }
@@ -166,15 +149,13 @@ public class ControllerEstatisticas {
 
     public int getNumeroVendasHoje() {
         int numeroVendas = 0;
-        for (Caixa caixa : repCaixa.listarCaixas()) {
-            Calendar hoje = new GregorianCalendar();
-            hoje.setTime(Date.from(Instant.now()));
-            if (isSameDay(caixa.getDataAbertura(), hoje)){
-                for (Venda venda:
-                        caixa.getVendasDoDia()) {
-                    if (isVenda(venda)){
-                        numeroVendas++;
-                    }
+        Calendar hoje = new GregorianCalendar();
+        hoje.setTime(Date.from(Instant.now()));
+        for (Venda venda:
+                reporitorioVendas.listarVendas()) {
+            if (isSameDay(venda.getDataCompra(), hoje)){
+                if (isVenda(venda)){
+                    numeroVendas++;
                 }
             }
         }
