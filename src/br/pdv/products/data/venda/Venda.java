@@ -5,11 +5,13 @@ import br.pdv.products.data.produto.Produto;
 import br.pdv.products.exceptions.ProdutoInexistenteException;
 import br.pdv.products.exceptions.ProdutoInvalidoException;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 
-public class Venda {
+public class Venda implements Serializable {
 
+    private static final long serialVersionUID = 20l;
     private Map<Produto, Float> carrinho;
     private static int sequencia = 0;
     private int numero;

@@ -2,27 +2,46 @@ package br.pdv.products.repository;
 
 import br.pdv.products.data.venda.Venda;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-public class VendasRepository implements IVendasRepository{
+public class VendasRepository implements IVendasRepository {
 
-    private ArrayList<Venda> vendasCadastradas = new ArrayList<>();
+    private ArrayList<Venda> vendasCadastradas;
+    private String pathDiretorio;
+    private String pathArquivo;
+    private File vendaDiretorio;
+    private File vendaArquivo;
+
+    public VendasRepository() throws ClassNotFoundException {
+        vendasCadastradas = new ArrayList<>();
+        pathDiretorio = "./archive/vendas";
+        pathArquivo = pathDiretorio + "/vendas_cadastradas.vnd";
+        vendaDiretorio = new File(pathDiretorio);
+        vendaArquivo = new File(pathArquivo);
+        if(vendaArquivo.exists()){
+            this.deserializeVendas();
+        }
+    }
 
     @Override
     public void inserir(Venda venda) {
         this.vendasCadastradas.add(venda);
+        this.serializeVendas();
     }
 
     @Override
     public void remover(Venda venda) {
         this.vendasCadastradas.remove(venda);
+        this.serializeVendas();
     }
 
     public void alterarVenda(Venda venda){
         Venda vendaAnterior = this.buscarVenda(venda.getNumero());
         vendasCadastradas.set(vendasCadastradas.indexOf(vendaAnterior), venda);
+        this.serializeVendas();
     }
 
     @Override
@@ -69,5 +88,27 @@ public class VendasRepository implements IVendasRepository{
     @Override
     public Collection<Venda> listarVendas() {
         return vendasCadastradas;
+    }
+
+    private void serializeVendas(){
+        try{
+            FileOutputStream gravador = new FileOutputStream(pathArquivo);
+            ObjectOutputStream conversor = new ObjectOutputStream(gravador);
+            conversor.writeObject(this.vendasCadastradas);
+            conversor.flush();
+            conversor.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void deserializeVendas() throws ClassNotFoundException {
+        try {
+            FileInputStream leitor = new FileInputStream(pathArquivo);
+            ObjectInputStream conversor = new ObjectInputStream(leitor);
+            this.vendasCadastradas = (ArrayList<Venda>) conversor.readObject();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
