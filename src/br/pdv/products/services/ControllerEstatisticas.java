@@ -4,6 +4,7 @@ import br.pdv.products.data.caixa.Caixa;
 import br.pdv.products.data.produto.Produto;
 import br.pdv.products.data.venda.Venda;
 import br.pdv.products.exceptions.CaixaInexistenteException;
+import br.pdv.products.exceptions.PeriodoInvalidoException;
 import br.pdv.products.exceptions.VendaInexistenteException;
 import br.pdv.products.exceptions.VendaInvalidaException;
 import br.pdv.products.repository.IVendasRepository;
@@ -51,6 +52,21 @@ public class ControllerEstatisticas {
                 return venda;
             } else throw new VendaInexistenteException();
         } else throw new VendaInvalidaException();
+    }
+
+    public ArrayList<Venda> buscarVendasPeriodo (Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
+        ArrayList<Venda> vendasPeriodo = new ArrayList<>();
+        if (dataInicio.compareTo(dataFim) <= 0){
+            for (Venda venda:
+                    reporitorioVendas.listarVendas()) {
+                int inicioCompare = venda.getDataCompra().compareTo(dataInicio);
+                int fimCompare = venda.getDataCompra().compareTo(dataFim);
+                if(inicioCompare >= 0 && fimCompare <= 0){
+                    vendasPeriodo.add(venda);
+                }
+            }
+            return vendasPeriodo;
+        } else throw new PeriodoInvalidoException(dataInicio, dataFim);
     }
 
     public float getFaturamentoTotal() {

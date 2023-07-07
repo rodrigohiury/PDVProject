@@ -1,5 +1,6 @@
 package br.pdv.products.data.venda;
 
+import br.pdv.products.data.funcionario.Funcionario;
 import br.pdv.products.data.produto.Produto;
 import br.pdv.products.exceptions.ProdutoInexistenteException;
 import br.pdv.products.exceptions.ProdutoInvalidoException;
@@ -17,12 +18,20 @@ public class Venda {
     private float valorPago;
     private float troco;
     private boolean finalizada = false;
+    private Funcionario vendedor;
 
 
     public Venda() {
         this.carrinho = new LinkedHashMap<>();
         this.dataCompra.setTime(Date.from(Instant.now()));
         this.numero = ++sequencia;
+    }
+
+    public Venda(Funcionario vendedor){
+        this.carrinho = new LinkedHashMap<>();
+        this.dataCompra.setTime(Date.from(Instant.now()));
+        this.numero = ++sequencia;
+        this.vendedor = vendedor;
     }
 
     public void inserirCompra(Produto produto){
@@ -106,5 +115,9 @@ public class Venda {
 
     public int getNumero() {
         return numero;
+    }
+
+    public Funcionario getVendedor() {
+        return vendedor;
     }
 }
