@@ -30,10 +30,16 @@ public class ProdutoRepository implements IProdutoRepository,Serializable{
         this.produtos = new ArrayList<>();
     }
 
+    /** Método para consultar um veículo pela placa informada.
+     * @param codigo - String que identifica o código do produto.
+     * @return Produto - objeto Produto que possui o código informado.
+     * @throws ProdutoNaoCadastradoException - Exceção levantada caso o produto com o código informado não esteja cadastrado no sistema.
+     * @throws CodigoInvalidoException
+     */
     @Override
     public Produto consultarProduto(String codigo) throws ProdutoNaoCadastradoException, CodigoInvalidoException {
         Produto ret = null;
-        //Busca na lista de veículos, se existir, retorna o veiculo, se não, levanta uma exceção
+        //Busca na lista de produtos, se existir, retorna o produto, se não, levanta uma exceção
         //A exceção está guardando a placa que gerou a exceção
 
         if(!confereCodigo(codigo))
