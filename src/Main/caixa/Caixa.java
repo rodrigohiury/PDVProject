@@ -2,7 +2,6 @@ package Main.caixa;
 
 import Main.funcionario.Funcionario;
 import Main.produto.Produto;
-import Main.transacao.Venda;
 import Main.exceptions.*;
 import Main.transacao.*;
 
@@ -12,14 +11,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+
 public class Caixa {
 
-    private Funcionario vendedor;
-    private Calendar dataAbertura = new GregorianCalendar();
-    private Calendar dataFechamento = new GregorianCalendar();
-    private float valorAbertura;
-    private float valorEmCaixa;
-    private ArrayList<Transacao> vendasDoDia = new ArrayList<>();
+    protected Funcionario vendedor;
+    protected Calendar dataAbertura = new GregorianCalendar();
+    protected Calendar dataFechamento = new GregorianCalendar();
+    protected float valorAbertura;
+    protected float valorEmCaixa;
+    protected ArrayList<Transacao> vendasDoDia = new ArrayList<>();
+    protected ArrayList<String> formasDePagamento = new ArrayList<>();
+    protected String notaFiscal;
 
     public Caixa(Funcionario vendedor) {
         this.vendedor = vendedor;
@@ -49,6 +51,23 @@ public class Caixa {
     public Calendar getDataFechamento() {
         return dataFechamento;
     }
+    public String getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    protected int numero;
+    public int getNumero() {
+        return numero;
+    }
+
+    public ArrayList<String> getFormasDePagamento() {
+        return formasDePagamento;
+    }
+
+    public void setFormasDePagamento(ArrayList<String> formasDePagamento) {
+        this.formasDePagamento = formasDePagamento;
+    }
+
 
     public float getValorAbertura() {
         return valorAbertura;
