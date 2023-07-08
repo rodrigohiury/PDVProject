@@ -4,6 +4,8 @@ import br.pdv.products.data.funcionario.Funcionario;
 import br.pdv.products.data.produto.Produto;
 import br.pdv.products.exceptions.ProdutoInexistenteException;
 import br.pdv.products.exceptions.ProdutoInvalidoException;
+import br.pdv.products.repository.IVendasRepository;
+import br.pdv.products.repository.VendasRepository;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -121,5 +123,9 @@ public class Venda implements Serializable {
 
     public Funcionario getVendedor() {
         return vendedor;
+    }
+
+    public static void setSequencia(int sequencia) {
+        Venda.sequencia = sequencia;
     }
 }

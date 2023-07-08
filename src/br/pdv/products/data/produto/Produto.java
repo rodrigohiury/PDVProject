@@ -1,10 +1,12 @@
 package br.pdv.products.data.produto;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Produto implements Comparable{
+public class Produto implements Comparable, Serializable {
 
+    private static final long serialVersionUID = 30l;
     private String nome;
     private float precoVenda;
     private float precoCusto;

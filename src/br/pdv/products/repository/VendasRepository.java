@@ -17,13 +17,21 @@ public class VendasRepository implements IVendasRepository {
 
     public VendasRepository() throws ClassNotFoundException {
         vendasCadastradas = new ArrayList<>();
-        pathDiretorio = "./archive/vendas";
-        pathArquivo = pathDiretorio + "/vendas_cadastradas.vnd";
+        pathDiretorio = "./src/archive/vendas";
+        pathArquivo = pathDiretorio + "/vendasCadastradas.vnd";
         vendaDiretorio = new File(pathDiretorio);
+        if (!vendaDiretorio.exists()){
+            if(!vendaDiretorio.mkdir()){
+                System.out.println("Não deu!");
+            }else {
+                System.out.println("Deu!");
+            }
+        }
         vendaArquivo = new File(pathArquivo);
         if(vendaArquivo.exists()){
             this.deserializeVendas();
         }
+        Venda.setSequencia(this.getUltimaSequencia());
     }
 
     @Override
@@ -110,5 +118,16 @@ public class VendasRepository implements IVendasRepository {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public int getUltimaSequencia(){
+        int numero = 0;
+        for (Venda venda:
+             this.vendasCadastradas) {
+            if(venda.getNumero() > numero){
+                numero = venda.getNumero();
+            }
+        }
+        return numero;
     }
 }
