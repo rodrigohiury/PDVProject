@@ -1,24 +1,28 @@
 package main.services;
 
+import main.exceptions.NaoHaProdutosException;
 import main.produto.Produto;
+import main.repository.IProdutoRepository;
 import main.transacao.Venda;
 import main.exceptions.PeriodoInvalidoException;
 import main.exceptions.VendaInexistenteException;
 import main.exceptions.VendaInvalidaException;
 import main.repository.IVendasRepository;
 
-import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ControllerEstatisticas {
 
     private IVendasRepository reporitorioVendas;
+    private IProdutoRepository produtoRepository;
 
-    public ControllerEstatisticas(IVendasRepository repositorioVendas) {
+    public ControllerEstatisticas(IVendasRepository repositorioVendas, IProdutoRepository produtoRepository) {
         this.reporitorioVendas = repositorioVendas;
+        this.produtoRepository = produtoRepository;
     }
 
-    public void inserirCaixa(Venda venda) throws VendaInvalidaException {
+    public void inserirVenda(Venda venda) throws VendaInvalidaException {
         if (venda != null){
             reporitorioVendas.inserir(venda);
         } else {
@@ -71,20 +75,16 @@ public class ControllerEstatisticas {
         float faturamento = 0.0f;
         for (Venda venda :
                 reporitorioVendas.listarVendas()) {
-            if (isVenda(venda)){
-                faturamento += venda.getValorPago();
-            }
+            faturamento += venda.getValorPago();
         }
         return faturamento;
     }
 
-    public float getFaturamentoDia(Calendar data) {
-        float faturamento = 0.0f;
+    public float getFaturamentoPeriodo(Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
+        float faturamento = 0;
         for (Venda venda:
-                reporitorioVendas.buscarVendas(data)) {
-            if (isVenda(venda)){
-                faturamento += venda.getValorPago();
-            }
+             this.buscarVendasPeriodo(dataInicio, dataFim)) {
+            faturamento += venda.getValor();
         }
         return faturamento;
     }
@@ -93,97 +93,61 @@ public class ControllerEstatisticas {
         float precoVenda, precoCusto, quantidade, lucroUnit, lucro = 0.0f;
         for (Venda venda:
                 reporitorioVendas.listarVendas()) {
-            if (isVenda(venda)){
-                Set<Produto> produtos = venda.getCarrinho().keySet();
-                for (Produto produto:
-                     produtos) {
-                    precoVenda = produto.getPrecoVenda();
-                    precoCusto = produto.getPrecoCusto();
-                    quantidade = venda.getCarrinho().get(produto);
-                    lucroUnit = (precoVenda - precoCusto) * quantidade;
-                    lucro += lucroUnit;
-                }
+            Set<Produto> produtos = venda.getCarrinho().keySet();
+            for (Produto produto:
+                    produtos) {
+                precoVenda = produto.getPrecoVenda();
+                precoCusto = produto.getPrecoCusto();
+                quantidade = venda.getCarrinho().get(produto);
+                lucroUnit = (precoVenda - precoCusto) * quantidade;
+                lucro += lucroUnit;
             }
         }
         return lucro;
     }
 
-    public float getLucroMensal() {
+    public float getLucroPeriodo(Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
         float precoVenda, precoCusto, quantidade, lucroUnit, lucro = 0.0f;
-        Calendar hoje = new GregorianCalendar();
-        hoje.setTime(Date.from(Instant.now()));
         for (Venda venda:
-                reporitorioVendas.listarVendas()) {
-            if (isSameMonth(venda.getDataCompra(), hoje)) {
-                if (isVenda(venda)) {
-                    Set<Produto> produtos = venda.getCarrinho().keySet();
-                    for (Produto produto :
-                            produtos) {
-                        precoVenda = produto.getPrecoVenda();
-                        precoCusto = produto.getPrecoCusto();
-                        quantidade = venda.getCarrinho().get(produto);
-                        lucroUnit = (precoVenda - precoCusto) * quantidade;
-                        lucro += lucroUnit;
-                    }
-                }
+                this.buscarVendasPeriodo(dataInicio, dataFim)) {
+            Set<Produto> produtos = venda.getCarrinho().keySet();
+            for (Produto produto:
+                    produtos) {
+                precoVenda = produto.getPrecoVenda();
+                precoCusto = produto.getPrecoCusto();
+                quantidade = venda.getCarrinho().get(produto);
+                lucroUnit = (precoVenda - precoCusto) * quantidade;
+                lucro += lucroUnit;
             }
         }
         return lucro;
     }
 
-    public float getTicketMedio() {
+    public float getTicketMedioTotal() {
         return (this.getFaturamentoTotal() / this.getNumeroVendasTotal());
+    }
+
+    public float getTicketMedioPeriodo(Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
+        return (this.getFaturamentoPeriodo(dataInicio, dataFim)/this.getNumeroVendasPeriodo(dataInicio, dataFim));
     }
 
     public int getNumeroVendasTotal() {
         int numeroVendas = 0;
         for (Venda venda:
                 reporitorioVendas.listarVendas()) {
-            if (isVenda(venda)){
-                numeroVendas++;
-            }
+            numeroVendas++;
         }
         return numeroVendas;
     }
 
-    public int getNumeroVendasMensal() {
-        int numeroVendas = 0;
-        Calendar hoje = new GregorianCalendar();
-        hoje.setTime(Date.from(Instant.now()));
-        for (Venda venda:
-                reporitorioVendas.listarVendas()) {
-            if (isSameMonth(venda.getDataCompra(), hoje)) {
-                if (isVenda(venda)) {
-                    numeroVendas++;
-                }
-            }
-        }
-        return numeroVendas;
+    public int getNumeroVendasPeriodo(Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
+        return this.buscarVendasPeriodo(dataInicio, dataFim).size();
     }
 
-    public int getNumeroVendasHoje() {
-        int numeroVendas = 0;
-        Calendar hoje = new GregorianCalendar();
-        hoje.setTime(Date.from(Instant.now()));
-        for (Venda venda:
-                reporitorioVendas.listarVendas()) {
-            if (isSameDay(venda.getDataCompra(), hoje)){
-                if (isVenda(venda)){
-                    numeroVendas++;
-                }
-            }
-        }
-        return numeroVendas;
-    }
-
-    public boolean isVenda(Venda venda){
-        if (venda.getCarrinho().size() == 1){
-            Produto produto = venda.getCarrinho().keySet().iterator().next();
-            if (produto.getNome().equals("Sangria") || produto.getNome().equals("Reforço")){
-                return false;
-            }
-        }
-        return true;
+    public List<Map.Entry<String, Float>> getProdutosMaisVendidos() throws NaoHaProdutosException {
+        List<Map.Entry<String, Float>> produtosMaisVendidosOrdenado = new ArrayList<>(this.reporitorioVendas.getProdutosMaisVendidos().entrySet());
+        produtosMaisVendidosOrdenado.sort(Map.Entry.comparingByValue());
+        return produtosMaisVendidosOrdenado;
     }
 
     private boolean isSameDay(Calendar date1, Calendar date2){

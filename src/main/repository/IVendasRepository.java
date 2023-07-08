@@ -4,6 +4,7 @@ import main.transacao.Venda;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 
 public interface IVendasRepository {
 
@@ -20,6 +21,8 @@ public interface IVendasRepository {
     public Collection<Venda> listarVendas();
 
     public boolean isEmpty();
+
+    public Map<String, Float> getProdutosMaisVendidos();
 
 
 }

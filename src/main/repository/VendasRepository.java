@@ -1,35 +1,39 @@
 package main.repository;
 
+import main.produto.Produto;
 import main.transacao.Venda;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
+import java.util.*;
 
 public class VendasRepository implements IVendasRepository {
 
     private ArrayList<Venda> vendasCadastradas;
+    private Map<String ,Float> produtosMaisVendidos;
     private String pathDiretorio;
-    private String pathArquivo;
+    private String pathArquivoVendas;
+    private String pathArquivoProdutos;
     private File vendaDiretorio;
     private File vendaArquivo;
+    private File produtosArquivo;
 
     public VendasRepository() throws ClassNotFoundException {
         vendasCadastradas = new ArrayList<>();
+        produtosMaisVendidos = new TreeMap<>();
         pathDiretorio = "./src/archive/vendas";
-        pathArquivo = pathDiretorio + "/vendasCadastradas.vnd";
+        pathArquivoVendas = pathDiretorio + "/vendas_cadastradas.vnd";
+        pathArquivoProdutos = pathDiretorio + "/produtos_mais_vendido.prd";
         vendaDiretorio = new File(pathDiretorio);
         if (!vendaDiretorio.exists()){
-            if(!vendaDiretorio.mkdir()){
-                System.out.println("Não deu!");
-            }else {
-                System.out.println("Deu!");
-            }
+            vendaDiretorio.mkdir();
         }
-        vendaArquivo = new File(pathArquivo);
+        vendaArquivo = new File(pathArquivoVendas);
+        produtosArquivo = new File(pathArquivoProdutos);
         if(vendaArquivo.exists()){
             this.deserializeVendas();
+        }
+        if(produtosArquivo.exists()){
+            this.deserializeProdutos();
         }
         Venda.setSequencia(this.getUltimaSequencia());
     }
@@ -37,19 +41,44 @@ public class VendasRepository implements IVendasRepository {
     @Override
     public void inserir(Venda venda) {
         this.vendasCadastradas.add(venda);
+        for (Produto produto:
+                venda.getCarrinho().keySet()) {
+            String codigoProduto = produto.getCodigo();
+            float quantidadeVendida = venda.getCarrinho().get(produto);
+            if(this.produtosMaisVendidos.containsKey(codigoProduto)){
+                float quantidadeJaVendida = this.produtosMaisVendidos.get(codigoProduto);
+                quantidadeVendida += quantidadeJaVendida;
+            }
+            this.produtosMaisVendidos.put(codigoProduto, quantidadeVendida);
+        }
         this.serializeVendas();
+        this.serializeProdutosMaisVendidos();
     }
 
     @Override
     public void remover(Venda venda) {
         this.vendasCadastradas.remove(venda);
+        for (Produto produto:
+                venda.getCarrinho().keySet()) {
+            String codigoProduto = produto.getCodigo();
+            float quantidadeDevolvida = venda.getCarrinho().get(produto);
+            float quantidadeVendida = 0;
+            if(this.produtosMaisVendidos.containsKey(codigoProduto)){
+                quantidadeVendida = this.produtosMaisVendidos.get(codigoProduto);
+                quantidadeVendida -= quantidadeDevolvida;
+            }
+            this.produtosMaisVendidos.put(codigoProduto, quantidadeVendida);
+        }
         this.serializeVendas();
+        this.serializeProdutosMaisVendidos();
     }
 
     public void alterarVenda(Venda venda){
         Venda vendaAnterior = this.buscarVenda(venda.getNumero());
         vendasCadastradas.set(vendasCadastradas.indexOf(vendaAnterior), venda);
+        this.atualizaProdutosMaisVendidos();
         this.serializeVendas();
+        this.serializeProdutosMaisVendidos();
     }
 
     @Override
@@ -100,7 +129,7 @@ public class VendasRepository implements IVendasRepository {
 
     private void serializeVendas(){
         try{
-            FileOutputStream gravador = new FileOutputStream(pathArquivo);
+            FileOutputStream gravador = new FileOutputStream(pathArquivoVendas);
             ObjectOutputStream conversor = new ObjectOutputStream(gravador);
             conversor.writeObject(this.vendasCadastradas);
             conversor.flush();
@@ -110,11 +139,33 @@ public class VendasRepository implements IVendasRepository {
         }
     }
 
+    private void serializeProdutosMaisVendidos(){
+        try{
+            FileOutputStream gravador = new FileOutputStream(pathArquivoProdutos);
+            ObjectOutputStream conversor = new ObjectOutputStream(gravador);
+            conversor.writeObject(this.produtosMaisVendidos);
+            conversor.flush();
+            conversor.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     private void deserializeVendas() throws ClassNotFoundException {
         try {
-            FileInputStream leitor = new FileInputStream(pathArquivo);
+            FileInputStream leitor = new FileInputStream(pathArquivoVendas);
             ObjectInputStream conversor = new ObjectInputStream(leitor);
             this.vendasCadastradas = (ArrayList<Venda>) conversor.readObject();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void deserializeProdutos() throws ClassNotFoundException {
+        try {
+            FileInputStream leitor = new FileInputStream(pathArquivoProdutos);
+            ObjectInputStream conversor = new ObjectInputStream(leitor);
+            this.produtosMaisVendidos = (Map<String, Float>) conversor.readObject();
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -129,5 +180,22 @@ public class VendasRepository implements IVendasRepository {
             }
         }
         return numero;
+    }
+
+    private void atualizaProdutosMaisVendidos(){
+        this.produtosMaisVendidos.clear();
+        for (Venda venda:
+             this.vendasCadastradas) {
+            for (Produto produto:
+                 venda.getCarrinho().keySet()) {
+                String codigoProduto = produto.getCodigo();
+                float quantidadeVendida = venda.getCarrinho().get(produto);
+                this.produtosMaisVendidos.put(codigoProduto, quantidadeVendida);
+            }
+        }
+    }
+
+    public Map<String, Float> getProdutosMaisVendidos() {
+        return produtosMaisVendidos;
     }
 }
