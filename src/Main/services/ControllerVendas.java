@@ -1,6 +1,6 @@
 package Main.services;
 
-import Main.venda.Venda;
+import Main.transacao.Venda;
 import Main.exceptions.SemVendasCadastradasException;
 import Main.exceptions.VendaDuplicadaException;
 import Main.exceptions.VendaInexistenteException;

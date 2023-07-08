@@ -2,9 +2,9 @@ package Main.caixa;
 
 import Main.funcionario.Funcionario;
 import Main.produto.Produto;
-import Main.venda.Venda;
-import Main.Java.exceptions.*;
+import Main.transacao.Venda;
 import Main.exceptions.*;
+import Main.transacao.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class Caixa {
     private Calendar dataFechamento = new GregorianCalendar();
     private float valorAbertura;
     private float valorEmCaixa;
-    private ArrayList<Venda> vendasDoDia = new ArrayList<>();
+    private ArrayList<Transacao> vendasDoDia = new ArrayList<>();
 
     public Caixa(Funcionario vendedor) {
         this.vendedor = vendedor;
@@ -63,15 +63,24 @@ public class Caixa {
     }
 
     public ArrayList<Venda> getVendasDoDia() {
-        return vendasDoDia;
+        ArrayList<Venda> vendas = new ArrayList<>();
+        for (Transacao transacao:
+             this.vendasDoDia) {
+            if(transacao instanceof Venda){
+                vendas.add((Venda) transacao);
+            }
+        }
+        return vendas;
     }
 
     public Venda buscarVenda(int numero) throws NumeroVendaInvalidoException {
         if(numero > 0){
-            for (Venda venda:
+            for (Transacao transacao:
                     this.vendasDoDia) {
-                if (venda.getNumero() == numero){
-                    return venda;
+                if(transacao instanceof Venda){
+                    if (((Venda) transacao).getNumero() == numero){
+                        return (Venda) transacao;
+                    }
                 }
             }
             return null;
@@ -99,7 +108,7 @@ public class Caixa {
         }
     }
 
-    public void devolverProduto(Produto produto, int numero) throws NumeroVendaInvalidoException, VendaInexistenteException, ProdutoInvalidoException, ProdutoInexistenteException {
+    public void devolverProduto(Produto produto, int numero) throws NumeroVendaInvalidoException, VendaInexistenteException, ProdutoNaoCadastradoException, ProdutoNaoCadastradoException {
         if (produto != null){
             Venda venda = this.buscarVenda(numero);
             if (venda != null){
@@ -109,22 +118,16 @@ public class Caixa {
                 throw new VendaInexistenteException();
             }
         }else {
-            throw new ProdutoInvalidoException();
+            throw new NullPointerException();
         }
     }
 
     public void sangrarCaixa(float valor) throws ValorSangriaInvalidoException, SangriaInvalidaException {
         if (valor > 0){
             if(this.valorEmCaixa >= valor){
-                Venda sangria = new Venda();
-                Produto sangriaProduto = new Produto("Sangria", -valor);
-                sangria.inserirCompra(sangriaProduto);
-                sangria.setValorPago(-valor);
-                try {
-                    this.adicionarVenda(sangria);
-                } catch (VendaInvalidaException vi) {
-                    throw new ValorSangriaInvalidoException(vi, valor);
-                }
+                Transacao sangria = new Sangria(valor);
+                this.vendasDoDia.add(sangria);
+                this.atualizaValorEmCaixa();
             }else {
                 throw new SangriaInvalidaException(valor);
             }
@@ -135,16 +138,9 @@ public class Caixa {
 
     public void reforcarCaixa(float valor) throws ValorReforcoInvalidoException {
         if (valor > 0){
-            Venda reforco = new Venda();
-            Produto reforcoProduto = new Produto("Reforço", valor,);
-            reforco.inserirCompra(reforcoProduto);
-            reforco.setValorPago(valor);
-            try {
-                this.adicionarVenda(reforco);
-            } catch (VendaInvalidaException vi) {
-                throw new ValorReforcoInvalidoException(vi, valor);
-
-            }
+            Transacao reforco = new Reforco(valor);
+            this.vendasDoDia.add(reforco);
+            this.atualizaValorEmCaixa();
         }else {
             throw new ValorReforcoInvalidoException(valor);
         }
@@ -152,9 +148,9 @@ public class Caixa {
 
     public void atualizaValorEmCaixa(){
         this.valorEmCaixa = this.valorAbertura;
-        for (Venda venda :
+        for (Transacao transacao :
             this.vendasDoDia) {
-            this.valorEmCaixa += venda.getValor();
+            this.valorEmCaixa += transacao.getValor();
         }
     }
 

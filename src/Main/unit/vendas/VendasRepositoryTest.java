@@ -1,7 +1,7 @@
 package Main.unit.vendas;
 
 import Main.produto.Produto;
-import Main.venda.Venda;
+import Main.transacao.Venda;
 import Main.repository.VendasRepository;
 import org.junit.jupiter.api.*;
 
@@ -17,7 +17,7 @@ public class VendasRepositoryTest {
         vendasRepository = new VendasRepository();
         Venda vendaTest = new Venda();
         this.vendaNumero = vendaTest.getNumero();
-        vendaTest.inserirCompra(new Produto("Banana", 0.50f), 12);
+        vendaTest.inserirCompra(new Produto("Banana", 0.50f, 0.20f, "5050", 40, "Delit"), 12);
         vendaTest.setValorPago(20);
         vendasRepository.inserir(vendaTest);
         Venda vendaAchada = vendasRepository.buscarVenda(vendaTest.getNumero());

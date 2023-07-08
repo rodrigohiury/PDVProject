@@ -1,7 +1,7 @@
 package Main.services;
 
 import Main.produto.Produto;
-import Main.venda.Venda;
+import Main.transacao.Venda;
 import Main.exceptions.PeriodoInvalidoException;
 import Main.exceptions.VendaInexistenteException;
 import Main.exceptions.VendaInvalidaException;

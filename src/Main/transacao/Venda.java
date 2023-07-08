@@ -1,22 +1,20 @@
-package Main.venda;
+package Main.transacao;
 
+import Main.exceptions.ProdutoNaoCadastradoException;
 import Main.funcionario.Funcionario;
 import Main.produto.Produto;
-import Main.exceptions.ProdutoInexistenteException;
-import Main.exceptions.ProdutoInvalidoException;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 
-public class Venda implements Serializable {
+public class Venda extends Transacao implements Serializable {
 
     private static final long serialVersionUID = 20l;
     private Map<Produto, Float> carrinho;
     private static int sequencia = 0;
     private int numero;
     private Calendar dataCompra = new GregorianCalendar();
-    private float valor = 0.0f;
     private float valorPago;
     private float troco;
     private boolean finalizada = false;
@@ -27,6 +25,7 @@ public class Venda implements Serializable {
         this.carrinho = new LinkedHashMap<>();
         this.dataCompra.setTime(Date.from(Instant.now()));
         this.numero = ++sequencia;
+        super.setValor(0);
     }
 
     public Venda(Funcionario vendedor){
@@ -34,6 +33,7 @@ public class Venda implements Serializable {
         this.dataCompra.setTime(Date.from(Instant.now()));
         this.numero = ++sequencia;
         this.vendedor = vendedor;
+        super.setValor(0);
     }
 
     public void inserirCompra(Produto produto){
@@ -60,15 +60,13 @@ public class Venda implements Serializable {
         }
     }
 
-    public void removerCompra(Produto produto) throws ProdutoInexistenteException, ProdutoInvalidoException {
+    public void removerCompra(Produto produto) throws ProdutoNaoCadastradoException {
         if (produto != null){
             if (carrinho.containsKey(produto)){
                 carrinho.remove(produto);
             }else {
-                throw new ProdutoInexistenteException();
+                throw new ProdutoNaoCadastradoException(produto.getCodigo());
             }
-        }else {
-            throw new ProdutoInvalidoException();
         }
         this.atualizaValor();
     }
@@ -82,7 +80,7 @@ public class Venda implements Serializable {
     }
 
     public float getValor() {
-        return valor;
+        return super.getValor();
     }
 
     public float getValorPago() {
@@ -95,9 +93,9 @@ public class Venda implements Serializable {
 
     public void setValorPago(float valorPago) {
         if (!this.isFinalizada()){
-            if (valorPago >= this.valor){
+            if (valorPago >= this.getValor()){
                 this.valorPago = valorPago;
-                this.troco = this.valor - this.valorPago;
+                this.troco = this.getValor() - this.valorPago;
                 this.finalizada = true;
             }
         }
@@ -108,11 +106,12 @@ public class Venda implements Serializable {
     }
 
     public void atualizaValor(){
-        this.valor = 0;
+        float valorAtualizado = 0;
         for (Produto produto:
         carrinho.keySet()) {
-            this.valor += produto.getPrecoVenda();
+            valorAtualizado += produto.getPrecoVenda();
         }
+        super.setValor(valorAtualizado);
     }
 
     public int getNumero() {

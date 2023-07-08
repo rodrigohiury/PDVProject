@@ -1,6 +1,6 @@
 package Main.repository;
 
-import Main.venda.Venda;
+import Main.transacao.Venda;
 
 import java.io.*;
 import java.util.ArrayList;

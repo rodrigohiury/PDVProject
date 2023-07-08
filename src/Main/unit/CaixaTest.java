@@ -4,8 +4,7 @@ import Main.caixa.Caixa;
 import Main.funcionario.Funcionario;
 import Main.funcionario.Operador;
 import Main.produto.Produto;
-import Main.venda.Venda;
-import Main.Java.exceptions.*;
+import Main.transacao.Venda;
 import Main.exceptions.*;
 import org.junit.jupiter.api.*;
 
@@ -94,7 +93,7 @@ public class CaixaTest {
     @Test
     public void getVendasDoDia() throws VendaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
         ArrayList<Venda> vendaArrayList = new ArrayList<>();
         vendaArrayList.add(venda);
@@ -105,7 +104,7 @@ public class CaixaTest {
     @Test
     public void buscarVenda() throws NumeroVendaInvalidoException, VendaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
         int numero = venda.getNumero();
         caixaTest.adicionarVenda(venda);
@@ -125,7 +124,7 @@ public class CaixaTest {
     @Test
     public void adicionarVenda() throws NumeroVendaInvalidoException, VendaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
         caixaTest.adicionarVenda(venda);
         Assertions.assertEquals(venda, caixaTest.buscarVenda(venda.getNumero()));
@@ -139,7 +138,7 @@ public class CaixaTest {
     @Test
     public void removerVenda() throws NumeroVendaInvalidoException, VendaInexistenteException, VendaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
         int numero = venda.getNumero();
         caixaTest.adicionarVenda(venda);
@@ -158,11 +157,11 @@ public class CaixaTest {
     }
 
     @Test
-    public void devolverProduto() throws NumeroVendaInvalidoException, VendaInexistenteException, ProdutoInvalidoException, VendaInvalidaException, ProdutoInexistenteException {
+    public void devolverProduto() throws NumeroVendaInvalidoException, VendaInexistenteException, VendaInvalidaException, ProdutoNaoCadastradoException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
-        Produto produto2 = new Produto("PRODUTO2", 15);
+        Produto produto2 = new Produto("PRODUTO2", 10, 2, "0002", 20, "Fornecedor");
         venda.inserirCompra(produto2);
         int numeroVenda = venda.getNumero();
         caixaTest.adicionarVenda(venda);
@@ -172,23 +171,23 @@ public class CaixaTest {
 
     @Test
     public void devolverProdutoInvalido(){
-        Assertions.assertThrows(ProdutoInvalidoException.class, () -> caixaTest.devolverProduto(null, 1));
+        Assertions.assertThrows(NullPointerException.class, () -> caixaTest.devolverProduto(null, 1));
     }
 
     @Test
     public void devolverProdutoInexistente() throws VendaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
-        Produto produto2 = new Produto("PRODUTO2", 15);
+        Produto produto2 = new Produto("PRODUTO2", 15, 7.5f, "0002", 24, "Fornecedor");
         caixaTest.adicionarVenda(venda);
-        Assertions.assertThrows(ProdutoInexistenteException.class, () -> caixaTest.devolverProduto(produto2, venda.getNumero()));
+        Assertions.assertThrows(ProdutoNaoCadastradoException.class, () -> caixaTest.devolverProduto(produto2, venda.getNumero()));
     }
 
     @Test
     public void sangrarCaixa() throws ValorSangriaInvalidoException, VendaInvalidaException, SangriaInvalidaException {
         Venda venda = new Venda();
-        Produto produto = new Produto("PRODUTO", 10);
+        Produto produto = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda.inserirCompra(produto);
         caixaTest.adicionarVenda(venda);
         float valorAntes = caixaTest.getValorEmCaixa();
@@ -231,13 +230,13 @@ public class CaixaTest {
     @Test
     public void atualizaValorEmCaixaCheio() throws VendaInvalidaException {
         Venda venda1 = new Venda();
-        Produto produto1 = new Produto("PRODUTO", 10);
+        Produto produto1 = new Produto("PRODUTO", 10, 2, "0001", 20, "Fornecedor");
         venda1.inserirCompra(produto1);
         Venda venda2 = new Venda();
-        Produto produto2 = new Produto("PRODUTO2", 234.25f);
+        Produto produto2 = new Produto("PRODUTO2", 234.25f, 180, "0002", 20, "Fornecedor");
         venda2.inserirCompra(produto2);
         Venda venda3 = new Venda();
-        Produto produto3 = new Produto("PRODUTO3", 321.05f);
+        Produto produto3 = new Produto("PRODUTO3", 321.05f, 230, "0003", 20, "Fornecedor");
         venda3.inserirCompra(produto3);
         caixaTest.adicionarVenda(venda1);
         caixaTest.adicionarVenda(venda2);
