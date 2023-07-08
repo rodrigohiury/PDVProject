@@ -2,7 +2,6 @@ package main.caixa;
 
 import main.funcionario.Funcionario;
 import main.produto.Produto;
-import main.transacao.Venda;
 import main.exceptions.*;
 import main.transacao.*;
 
@@ -11,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
+import java.lang.StringBuilder;
 
 
 public class Caixa {
 
-    protected Funcionario vendedor;
     protected int numero;
+    protected Funcionario vendedor;
     protected Calendar dataAbertura = new GregorianCalendar();
     protected Calendar dataFechamento = new GregorianCalendar();
     protected float valorAbertura;
@@ -48,17 +49,6 @@ public class Caixa {
         this.valorAbertura = valor;
         this.valorEmCaixa = valor;
         this.formasDePagamento = formasDePagamento;
-    }
-
-    public ArrayList<Venda> getVendasDoDia() {
-        ArrayList<Venda> vendas = new ArrayList<>();
-        for (Transacao transacao:
-             this.vendasDoDia) {
-            if(transacao instanceof Venda){
-                vendas.add((Venda) transacao);
-            }
-        }
-        return vendas;
     }
 
     public Venda buscarVenda(int numero) throws NumeroVendaInvalidoException {
@@ -140,6 +130,41 @@ public class Caixa {
             this.vendasDoDia) {
             this.valorEmCaixa += transacao.getValor();
         }
+    }
+
+    public ArrayList<Venda> getVendasDoDia() {
+        ArrayList<Venda> vendas = new ArrayList<>();
+        for (Transacao transacao:
+             this.vendasDoDia) {
+            if(transacao instanceof Venda){
+                vendas.add((Venda) transacao);
+            }
+        }
+        return vendas;
+    }
+
+
+    public String gerarNotaFiscal(Venda venda) {
+        StringBuilder notaFiscalBuilder = new StringBuilder();
+
+        notaFiscalBuilder.append("===== NOTA FISCAL =====\n");
+        notaFiscalBuilder.append("Data: ").append(venda.getDataCompra().getTime()).append("\n");
+        notaFiscalBuilder.append("Vendedor: ").append(venda.getVendedor().getNome()).append("\n");
+        notaFiscalBuilder.append("Número da Venda: ").append(venda.getNumero()).append("\n");
+        notaFiscalBuilder.append("Itens da Venda:\n");
+
+        for (Map.Entry<Produto, Float> entry : venda.getCarrinho().entrySet()) {
+            Produto produto = entry.getKey();
+            Float quantidade = entry.getValue();
+            notaFiscalBuilder.append("- Produto: ").append(produto.getNome())
+                    .append(" | Preço Unitário: ").append(produto.getPrecoVenda())
+                    .append(" | Quantidade: ").append(quantidade)
+                    .append(" | Subtotal: ").append(produto.getPrecoVenda() * quantidade).append("\n");
+        }
+
+        notaFiscalBuilder.append("Valor Total: ").append(venda.getValor()).append("\n");
+        notaFiscalBuilder.append("=======================\n");
+        return notaFiscalBuilder.toString();
     }
 
     public void fecharCaixa(){
