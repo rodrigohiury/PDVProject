@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 public class Caixa {
 
     protected Funcionario vendedor;
+    protected int numero;
     protected Calendar dataAbertura = new GregorianCalendar();
     protected Calendar dataFechamento = new GregorianCalendar();
     protected float valorAbertura;
@@ -23,62 +24,29 @@ public class Caixa {
     protected ArrayList<String> formasDePagamento = new ArrayList<>();
     protected String notaFiscal;
 
-    public Caixa(Funcionario vendedor) {
+    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento) {
         this.vendedor = vendedor;
+        if (numero>0){
+            this.numero = numero;
+        }
         this.dataAbertura.setTime(Date.from(Instant.now()));
         this.valorAbertura = 0.0f;
         this.valorEmCaixa = valorAbertura;
+        this.formasDePagamento = formasDePagamento;
     }
 
-    public Caixa(Funcionario vendedor, float valor) throws ValorAberturaInvalidoException {
+    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento, float valor) throws ValorAberturaInvalidoException {
         this.vendedor = vendedor;
+        if (numero>0){
+            this.numero = numero;
+        }
         this.dataAbertura.setTime(Date.from(Instant.now()));
         if(valor < 0){
             throw new ValorAberturaInvalidoException(valor);
         }
         this.valorAbertura = valor;
         this.valorEmCaixa = valor;
-    }
-
-    public Funcionario getVendedor() {
-        return vendedor;
-    }
-
-    public Calendar getDataAbertura() {
-        return dataAbertura;
-    }
-
-    public Calendar getDataFechamento() {
-        return dataFechamento;
-    }
-    public String getNotaFiscal() {
-        return notaFiscal;
-    }
-
-    protected int numero;
-    public int getNumero() {
-        return numero;
-    }
-
-    public ArrayList<String> getFormasDePagamento() {
-        return formasDePagamento;
-    }
-
-    public void setFormasDePagamento(ArrayList<String> formasDePagamento) {
         this.formasDePagamento = formasDePagamento;
-    }
-
-
-    public float getValorAbertura() {
-        return valorAbertura;
-    }
-
-    public float getValorEmCaixa() {
-        return valorEmCaixa;
-    }
-
-    public void setVendedor(Funcionario vendedor) {
-        this.vendedor = vendedor;
     }
 
     public ArrayList<Venda> getVendasDoDia() {
@@ -176,4 +144,45 @@ public class Caixa {
     public void fecharCaixa(){
         dataFechamento.setTime(Date.from(Instant.now()));
     }
+    
+    public Funcionario getVendedor() {
+        return vendedor;
+    }
+
+    public Calendar getDataAbertura() {
+        return dataAbertura;
+    }
+
+    public Calendar getDataFechamento() {
+        return dataFechamento;
+    }
+    
+    public String getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public ArrayList<String> getFormasDePagamento() {
+        return formasDePagamento;
+    }
+
+    public void setFormasDePagamento(ArrayList<String> formasDePagamento) {
+        this.formasDePagamento = formasDePagamento;
+    }
+
+    public float getValorAbertura() {
+        return valorAbertura;
+    }
+
+    public float getValorEmCaixa() {
+        return valorEmCaixa;
+    }
+
+    public void setVendedor(Funcionario vendedor) {
+        this.vendedor = vendedor;
+    }
+
 }
