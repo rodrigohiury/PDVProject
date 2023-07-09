@@ -24,5 +24,7 @@ public interface IVendasRepository {
 
     public Map<String, Float> getProdutosMaisVendidos();
 
+    public void deleteArchives();
+
 
 }

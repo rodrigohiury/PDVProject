@@ -198,4 +198,11 @@ public class VendasRepository implements IVendasRepository {
     public Map<String, Float> getProdutosMaisVendidos() {
         return produtosMaisVendidos;
     }
+
+    public void deleteArchives(){
+        this.vendaArquivo.delete();
+        this.produtosArquivo.delete();
+        this.vendasCadastradas.clear();
+        this.produtosMaisVendidos.clear();
+    }
 }

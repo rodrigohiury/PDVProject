@@ -1,11 +1,11 @@
-package Main.GUI;
+package main.GUI;
 
 import javax.swing.*;
 
-import Main.exceptions.CodigoInvalidoException;
-import Main.exceptions.CodigoJaCadastradoException;
-import Main.repository.ProdutoRepository;
-import Main.produto.Produto;
+import main.exceptions.CodigoInvalidoException;
+import main.exceptions.CodigoJaCadastradoException;
+import main.repository.ProdutoRepository;
+import main.produto.Produto;
 import java.awt.event.*;
 
 public class GUICadastrarProduto extends JFrame {

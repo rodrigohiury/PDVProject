@@ -156,7 +156,7 @@ public class ControllerEstatisticas {
         ArrayList<Venda> vendasPeriodo = this.buscarVendasPeriodo(dataInicio, dataFim);
         Set<Produto> produtosVendidos;
         float quantidadeVendida;
-        if (dataInicio.compareTo(dataFim) <= 0){
+        if (vendasPeriodo != null){
             for (Venda venda:
                     vendasPeriodo) {
                 produtosVendidos = venda.getCarrinho().keySet();
@@ -168,7 +168,11 @@ public class ControllerEstatisticas {
             }
             return new ArrayList<>(produtosVendidosPeriodo.entrySet());
         }else {
-            throw new PeriodoInvalidoException(dataInicio, dataFim);
+            return null;
         }
+    }
+
+    public void deleteArchives(){
+        this.repositorioVendas.deleteArchives();
     }
 }

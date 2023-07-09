@@ -1,8 +1,8 @@
-package Main.GUI;
+package main.GUI;
 
-import Main.exceptions.CodigoInvalidoException;
-import Main.exceptions.ProdutoNaoCadastradoException;
-import Main.repository.ProdutoRepository;
+import main.exceptions.CodigoInvalidoException;
+import main.exceptions.ProdutoNaoCadastradoException;
+import main.repository.ProdutoRepository;
 import java.awt.event.*;
 import javax.swing.*;
 
