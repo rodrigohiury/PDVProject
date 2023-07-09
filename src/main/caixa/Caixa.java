@@ -7,15 +7,17 @@ import main.transacao.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 import java.lang.StringBuilder;
 
 
 public class Caixa {
-
+    private static int sequencia = 0;
     protected int numero;
     protected Funcionario vendedor;
     protected Calendar dataAbertura = new GregorianCalendar();
@@ -23,32 +25,29 @@ public class Caixa {
     protected float valorAbertura;
     protected float valorEmCaixa;
     protected ArrayList<Transacao> vendasDoDia = new ArrayList<>();
-    protected ArrayList<String> formasDePagamento = new ArrayList<>();
+    protected List<String> formasDePagamento = new ArrayList<>();
     protected String notaFiscal;
 
-    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento) {
+    public Caixa(Funcionario vendedor) {
         this.vendedor = vendedor;
-        if (numero>0){
-            this.numero = numero;
-        }
         this.dataAbertura.setTime(Date.from(Instant.now()));
         this.valorAbertura = 0.0f;
         this.valorEmCaixa = valorAbertura;
-        this.formasDePagamento = formasDePagamento;
+        this.numero = ++sequencia;
+        this.formasDePagamento = Arrays.asList("Débito", "Crédito", "Dinheiro", "Vale Alimentação");
+
     }
 
-    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento, float valor) throws ValorAberturaInvalidoException {
+    public Caixa(Funcionario vendedor, float valor) throws ValorAberturaInvalidoException {
         this.vendedor = vendedor;
-        if (numero>0){
-            this.numero = numero;
-        }
         this.dataAbertura.setTime(Date.from(Instant.now()));
         if(valor < 0){
             throw new ValorAberturaInvalidoException(valor);
         }
         this.valorAbertura = valor;
         this.valorEmCaixa = valor;
-        this.formasDePagamento = formasDePagamento;
+        this.numero = ++sequencia;
+        this.formasDePagamento = Arrays.asList("Débito", "Crédito", "Dinheiro", "Vale Alimentação");
     }
 
     public Venda buscarVenda(int numero) throws NumeroVendaInvalidoException {
@@ -191,7 +190,7 @@ public class Caixa {
         return numero;
     }
 
-    public ArrayList<String> getFormasDePagamento() {
+    public List<String> getFormasDePagamento() {
         return formasDePagamento;
     }
 
