@@ -13,7 +13,6 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.lang.StringBuilder;
 
-
 public class Caixa {
 
     protected int numero;
@@ -26,10 +25,12 @@ public class Caixa {
     protected ArrayList<String> formasDePagamento = new ArrayList<>();
     protected String notaFiscal;
 
-    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento) {
+    public Caixa(Funcionario vendedor, int numero, ArrayList<String> formasDePagamento) throws CodigoInvalidoException {
         this.vendedor = vendedor;
-        if (numero>0){
+        if (numero > 0) {
             this.numero = numero;
+        } else {
+            throw new CodigoInvalidoException();
         }
         this.dataAbertura.setTime(Date.from(Instant.now()));
         this.valorAbertura = 0.0f;
@@ -37,13 +38,14 @@ public class Caixa {
         this.formasDePagamento = formasDePagamento;
     }
 
-    public Caixa(Funcionario vendedor, int numero, ArrayList<String>formasDePagamento, float valor) throws ValorAberturaInvalidoException {
+    public Caixa(Funcionario vendedor, int numero, ArrayList<String> formasDePagamento, float valor)
+            throws ValorAberturaInvalidoException {
         this.vendedor = vendedor;
-        if (numero>0){
+        if (numero > 0) {
             this.numero = numero;
         }
         this.dataAbertura.setTime(Date.from(Instant.now()));
-        if(valor < 0){
+        if (valor < 0) {
             throw new ValorAberturaInvalidoException(valor);
         }
         this.valorAbertura = valor;
@@ -52,97 +54,94 @@ public class Caixa {
     }
 
     public Venda buscarVenda(int numero) throws NumeroVendaInvalidoException {
-        if(numero > 0){
-            for (Transacao transacao:
-                    this.vendasDoDia) {
-                if(transacao instanceof Venda){
-                    if (((Venda) transacao).getNumero() == numero){
+        if (numero > 0) {
+            for (Transacao transacao : this.vendasDoDia) {
+                if (transacao instanceof Venda) {
+                    if (((Venda) transacao).getNumero() == numero) {
                         return (Venda) transacao;
                     }
                 }
             }
             return null;
-        }else {
+        } else {
             throw new NumeroVendaInvalidoException(numero);
         }
     }
 
     public void adicionarVenda(Venda venda) throws VendaInvalidaException {
-        if (venda != null){
+        if (venda != null) {
             this.vendasDoDia.add(venda);
             this.valorEmCaixa += venda.getValor();
-        }else {
+        } else {
             throw new VendaInvalidaException();
         }
     }
 
     public void removerVenda(int numero) throws NumeroVendaInvalidoException, VendaInexistenteException {
         Venda venda = this.buscarVenda(numero);
-        if(venda != null){
+        if (venda != null) {
             this.vendasDoDia.remove(venda);
             this.valorEmCaixa -= venda.getValor();
-        }else{
+        } else {
             throw new VendaInexistenteException();
         }
     }
 
-    public void devolverProduto(Produto produto, int numero) throws NumeroVendaInvalidoException, VendaInexistenteException, ProdutoNaoCadastradoException, ProdutoNaoCadastradoException {
-        if (produto != null){
+    public void devolverProduto(Produto produto, int numero) throws NumeroVendaInvalidoException,
+            VendaInexistenteException, ProdutoNaoCadastradoException, ProdutoNaoCadastradoException {
+        if (produto != null) {
             Venda venda = this.buscarVenda(numero);
-            if (venda != null){
+            if (venda != null) {
                 venda.removerCompra(produto);
                 this.atualizaValorEmCaixa();
-            }else {
+            } else {
                 throw new VendaInexistenteException();
             }
-        }else {
+        } else {
             throw new NullPointerException();
         }
     }
 
     public void sangrarCaixa(float valor) throws ValorSangriaInvalidoException, SangriaInvalidaException {
-        if (valor > 0){
-            if(this.valorEmCaixa >= valor){
+        if (valor > 0) {
+            if (this.valorEmCaixa >= valor) {
                 Transacao sangria = new Sangria(valor);
                 this.vendasDoDia.add(sangria);
                 this.atualizaValorEmCaixa();
-            }else {
+            } else {
                 throw new SangriaInvalidaException(valor);
             }
-        }else {
+        } else {
             throw new ValorSangriaInvalidoException(valor);
         }
     }
 
     public void reforcarCaixa(float valor) throws ValorReforcoInvalidoException {
-        if (valor > 0){
+        if (valor > 0) {
             Transacao reforco = new Reforco(valor);
             this.vendasDoDia.add(reforco);
             this.atualizaValorEmCaixa();
-        }else {
+        } else {
             throw new ValorReforcoInvalidoException(valor);
         }
     }
 
-    public void atualizaValorEmCaixa(){
+    public void atualizaValorEmCaixa() {
         this.valorEmCaixa = this.valorAbertura;
-        for (Transacao transacao :
-            this.vendasDoDia) {
+        for (Transacao transacao : this.vendasDoDia) {
             this.valorEmCaixa += transacao.getValor();
         }
     }
 
     public ArrayList<Venda> getVendasDoDia() {
         ArrayList<Venda> vendas = new ArrayList<>();
-        for (Transacao transacao:
-             this.vendasDoDia) {
-            if(transacao instanceof Venda){
+        for (Transacao transacao : this.vendasDoDia) {
+            if (transacao instanceof Venda) {
                 vendas.add((Venda) transacao);
             }
         }
         return vendas;
     }
-
 
     public String gerarNotaFiscal(Venda venda) {
         StringBuilder notaFiscalBuilder = new StringBuilder();
@@ -167,10 +166,10 @@ public class Caixa {
         return notaFiscalBuilder.toString();
     }
 
-    public void fecharCaixa(){
+    public void fecharCaixa() {
         dataFechamento.setTime(Date.from(Instant.now()));
     }
-    
+
     public Funcionario getVendedor() {
         return vendedor;
     }
@@ -182,7 +181,7 @@ public class Caixa {
     public Calendar getDataFechamento() {
         return dataFechamento;
     }
-    
+
     public String getNotaFiscal() {
         return notaFiscal;
     }
