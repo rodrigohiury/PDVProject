@@ -26,7 +26,7 @@ public class CaixaTest {
 
     @BeforeEach
     public void getInstance(){
-        caixaTest = new Caixa(funcionario, 0001, null);
+        caixaTest = new Caixa(funcionario);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class CaixaTest {
 
     @Test
     public void aberturaValor() throws ValorAberturaInvalidoException {
-        caixaTest = new Caixa(funcionario, 0001, null, 100f);
+        caixaTest = new Caixa(funcionario);
         float caixaInicialEsperado = 100f;
         Assertions.assertEquals(caixaInicialEsperado, caixaTest.getValorAbertura());
     }
@@ -45,12 +45,12 @@ public class CaixaTest {
     @Test
     public void aberturaValorNegativo(){
         Assertions.assertThrows(ValorAberturaInvalidoException.class,
-                () -> new Caixa(funcionario, 0001, null, -10));
+                () -> new Caixa(funcionario, -10));
     }
 
     @Test
     public void getFuncionario(){
-        caixaTest = new Caixa(funcionario, 0001, null);
+        caixaTest = new Caixa(funcionario);
         Assertions.assertEquals(this.funcionario, caixaTest.getVendedor());
     }
 

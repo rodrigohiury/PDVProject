@@ -206,4 +206,7 @@ public class Caixa {
         this.vendedor = vendedor;
     }
 
+    public static void setSequencia(int sequencia) {
+        Caixa.sequencia = sequencia;
+    }
 }

@@ -150,4 +150,25 @@ public class ControllerEstatisticas {
         });
         return produtosMaisVendidosOrdenado;
     }
+
+    public List<Map.Entry<String, Float>> getProdutosVendidosPeriodo(Calendar dataInicio, Calendar dataFim) throws PeriodoInvalidoException {
+        Map<String, Float> produtosVendidosPeriodo = new TreeMap<>();
+        ArrayList<Venda> vendasPeriodo = this.buscarVendasPeriodo(dataInicio, dataFim);
+        Set<Produto> produtosVendidos;
+        float quantidadeVendida;
+        if (dataInicio.compareTo(dataFim) <= 0){
+            for (Venda venda:
+                    vendasPeriodo) {
+                produtosVendidos = venda.getCarrinho().keySet();
+                for (Produto produto:
+                     produtosVendidos) {
+                    quantidadeVendida = venda.getCarrinho().get(produto);
+                    produtosVendidosPeriodo.put(produto.getCodigo(), quantidadeVendida);
+                }
+            }
+            return new ArrayList<>(produtosVendidosPeriodo.entrySet());
+        }else {
+            throw new PeriodoInvalidoException(dataInicio, dataFim);
+        }
+    }
 }
