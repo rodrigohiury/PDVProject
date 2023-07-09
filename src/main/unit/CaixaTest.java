@@ -37,7 +37,7 @@ public class CaixaTest {
 
     @Test
     public void aberturaValor() throws ValorAberturaInvalidoException {
-        caixaTest = new Caixa(funcionario, 100f);
+        caixaTest = new Caixa(funcionario);
         float caixaInicialEsperado = 100f;
         Assertions.assertEquals(caixaInicialEsperado, caixaTest.getValorAbertura());
     }

@@ -47,15 +47,4 @@ public class CaixaRepository implements ICaixaRepository {
         return this.caixaArrayList;
     }
 
-
-    private boolean isSameDay(Calendar date1, Calendar date2){
-        if (date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR)){
-            if (date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH)){
-                if (date1.get(Calendar.DATE) == date1.get(Calendar.DATE)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
