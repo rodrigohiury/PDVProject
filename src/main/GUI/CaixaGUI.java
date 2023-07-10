@@ -140,7 +140,7 @@ public class CaixaGUI extends JFrame {
             caixaRepository.inserirCaixa(caixaAtual);
             atualizarStatus("Caixa aberto:\n" + getInformacoesCaixa(caixaAtual));
             JOptionPane.showMessageDialog(this, "Caixa aberto com sucesso!");
-        } catch (CodigoInvalidoException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao abrir o caixa.");
         }
     }

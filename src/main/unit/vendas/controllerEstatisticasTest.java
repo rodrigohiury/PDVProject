@@ -34,10 +34,10 @@ public class controllerEstatisticasTest {
     @Order(1)
     public void inserirEBuscarVenda() throws VendaInvalidaException, ClassNotFoundException, VendaInexistenteException {
         Venda venda = new Venda();
-        venda.inserirCompra(new Produto("Suporte TV Novissimo", 19.99f, 10, "0001", 10, "Fornecedor"), 5);
+        venda.inserirCompra(new Produto("Suporte TV Novissimo", 19.99f, 10, "0000001", 10, "Fornecedor"), 5);
         venda.setValorPago(99.95f);
         Venda venda1 = new Venda();
-        venda1.inserirCompra(new Produto("Abraçadeira", 0.50f, 0.20f, "2020", 50, "Fornecedor"), 12);
+        venda1.inserirCompra(new Produto("Abraçadeira", 0.50f, 0.20f, "0002020", 50, "Fornecedor"), 12);
         venda1.setValorPago(6);
         faturamentoTotalCalculado = venda.getValorPago() + venda1.getValorPago();
         controllerEstatisticas.inserirVenda(venda);
@@ -53,7 +53,7 @@ public class controllerEstatisticasTest {
     @Order(2)
     public void produtosMaisVendidos(){
         String numeroProdutoMaisVendido = controllerEstatisticas.getProdutosMaisVendidos().get(0).getKey();
-        Assertions.assertEquals("2020",numeroProdutoMaisVendido);
+        Assertions.assertEquals("0002020",numeroProdutoMaisVendido);
     }
 
     @Test
@@ -111,8 +111,8 @@ public class controllerEstatisticasTest {
         Calendar dataFim = new GregorianCalendar();
         dataFim.set(2023, Calendar.JULY, 9, 23, 59, 59);
         ArrayList<String> produtosVendidosPeriodoEsperado = new ArrayList<>();
-        produtosVendidosPeriodoEsperado.add("0001");
-        produtosVendidosPeriodoEsperado.add("2020");
+        produtosVendidosPeriodoEsperado.add("0000001");
+        produtosVendidosPeriodoEsperado.add("0002020");
         ArrayList<String> produtosVendidosPeriodoObtido = new ArrayList<>();
         List<Map.Entry<String, Float>> produtosVendidosPeriodo = controllerEstatisticas.getProdutosVendidosPeriodo(dataInicio, dataFim);
         for (Map.Entry<String, Float> produtoVendido:
