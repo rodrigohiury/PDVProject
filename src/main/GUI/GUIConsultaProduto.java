@@ -215,7 +215,7 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
        });
    }
 
-    // Atributos que foram usados para fazer os componentes da janela da Consulta de Veículos
+    // Atributos que foram usados para fazer os componentes da janela da Consulta de Produtos
     private javax.swing.JButton jBConsultar;
     private javax.swing.JButton jBLimpar;
     private javax.swing.JLabel jLNome;
