@@ -1,5 +1,3 @@
-package main.GUI;
-
 import main.caixa.Caixa;
 import main.exceptions.*;
 import main.funcionario.Funcionario;
@@ -29,9 +27,11 @@ public class CaixaGUI extends JFrame {
     private JButton btnFecharCaixa;
     private JTextArea txtStatus;
 
-    public CaixaGUI() {
+    public CaixaGUI(int LAF) {
+    	this.setLookAndFeel(LAF);
+    	
         setTitle("Caixa");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLayout(new FlowLayout());
 
@@ -67,6 +67,8 @@ public class CaixaGUI extends JFrame {
                 fecharCaixa();
             }
         });
+        
+        setVisible(true);
     }
 
     private void abrirCaixa(){
@@ -130,4 +132,44 @@ public class CaixaGUI extends JFrame {
     private void atualizarStatus(String mensagem) {
         txtStatus.setText(mensagem);
     }
+    
+    // Método que define qual o LookAndFeel da página
+ 	public void setLookAndFeel(int LAF) {
+ 		switch (LAF) {
+ 		case 1:
+ 			try {
+ 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+ 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+ 					| UnsupportedLookAndFeelException e3) {
+ 				e3.printStackTrace();
+ 			}
+ 			break;
+ 		case 2:
+ 			try {
+ 				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+ 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+ 					| UnsupportedLookAndFeelException e2) {
+ 				e2.printStackTrace();
+ 			}
+ 			break;
+ 		case 3:
+ 			try {
+ 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+ 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+ 					| UnsupportedLookAndFeelException e1) {
+ 				e1.printStackTrace();
+ 			}
+ 			break;
+ 		case 4:
+ 			try {
+ 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+ 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+ 					| UnsupportedLookAndFeelException e) {
+ 				e.printStackTrace();
+ 			}
+ 			break;
+ 		default:
+ 			break;
+ 		}
+ 	}
 }
