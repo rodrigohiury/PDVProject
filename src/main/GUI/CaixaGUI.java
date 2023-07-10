@@ -81,7 +81,7 @@ public class CaixaGUI extends JFrame {
             return;
         }
 
-        FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
+        FuncionarioRepository funcionarioRepository = FuncionarioRepository.getInstance();
         Funcionario funcionario = funcionarioRepository.buscarFuncionario(nomeFuncionario);
 
         if (funcionario == null) {

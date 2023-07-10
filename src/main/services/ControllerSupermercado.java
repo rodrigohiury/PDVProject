@@ -16,7 +16,7 @@ public class ControllerSupermercado {
         this.estatisticas = new ControllerEstatisticas(this.vendasRepository);
         this.vendas = new ControllerVendas(this.vendasRepository);
         this.produtos = ProdutoRepository.getInstanceLoja();
-        this.funcionarios = new FuncionarioRepository();
+        this.funcionarios = FuncionarioRepository.getInstance();
         if (funcionarios.listarFuncionarios().isEmpty()){
             funcionarios.inserirFuncionario(Administrador.getInstance());
         }
