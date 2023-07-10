@@ -3,7 +3,7 @@ package main.services;
 import main.funcionario.Administrador;
 import main.repository.*;
 
-public class controllerSupermercado {
+public class ControllerSupermercado {
 
     public ControllerEstatisticas estatisticas;
     public ControllerVendas vendas;
@@ -11,7 +11,7 @@ public class controllerSupermercado {
     public IProdutoRepository produtos;
     public IFuncionarioRepository funcionarios;
 
-    public controllerSupermercado() throws ClassNotFoundException {
+    public ControllerSupermercado() throws ClassNotFoundException {
         this.vendasRepository = new VendasRepository();
         this.estatisticas = new ControllerEstatisticas(this.vendasRepository);
         this.vendas = new ControllerVendas(this.vendasRepository);

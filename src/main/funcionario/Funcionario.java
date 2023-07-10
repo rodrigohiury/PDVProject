@@ -6,6 +6,7 @@ public abstract class Funcionario implements Comparable{
     private String password;
     private String nome;
     private String cpf;
+    private int numeroDeVendas;
 
     public Funcionario(String username, String password, String nome, String cpf) {
         this.username = username;
@@ -42,5 +43,15 @@ public abstract class Funcionario implements Comparable{
         this.nome = nome;
     }
 
+    public int getNumeroDeVendas() {
+        return numeroDeVendas;
+    }
 
+    public void setNumeroDeVendas(int numeroDeVendas) {
+        this.numeroDeVendas = numeroDeVendas;
+    }
+
+    public void incrementNumeroDeVendas(int numeroDeVendas){
+        this.numeroDeVendas += numeroDeVendas;
+    }
 }
