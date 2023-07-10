@@ -210,7 +210,7 @@ public class TelaOperacoesCaixaGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Adicionar a lógica para finalizar a venda
-                venda.finalizarVenda();
+                venda.finalizarVenda(venda.getValorPago());
 
                 // Fechar a janela de adição de produtos à venda
                 frame.dispose();
