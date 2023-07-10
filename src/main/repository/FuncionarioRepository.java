@@ -10,6 +10,20 @@ import java.util.TreeSet;
 public class FuncionarioRepository implements IFuncionarioRepository{
 
     private Set<Funcionario> funcionariosCadastrados = new TreeSet<>();
+    private static FuncionarioRepository instance;
+
+    private FuncionarioRepository() {
+        instance = new FuncionarioRepository();
+    }
+
+    public static FuncionarioRepository getInstance(){
+        if (instance != null){
+            return instance;
+        }else {
+            instance = new FuncionarioRepository();
+            return instance;
+        }
+    }
 
     @Override
     public void inserirFuncionario(Funcionario funcionario) {
