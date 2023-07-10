@@ -1,7 +1,10 @@
+package main.GUI;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import main.GUI.GUIConsultaProduto;
 import main.exceptions.CodigoInvalidoException;
 import main.exceptions.ProdutoNaoCadastradoException;
 

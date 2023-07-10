@@ -22,8 +22,12 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
          * <b>Uso</b>:<br><br>
          * GUIConsultaProduto gui = new GUIConsultaProduto()
          */
-        ProdutoRepository produtos= ProdutoRepository.getInstanceLoja();
-        public GUIConsultaProduto() {initComponents();}
+       ProdutoRepository produtos= ProdutoRepository.getInstanceLoja();
+        public GUIConsultaProduto(int LAF) {
+            this.setLookAndFeel(LAF);
+            initComponents();
+        }
+    private int setLookAndFeel;
 
     /* Este método instancia, configura, adiciona e cria os ActionListener de cada componente
  da interface gráfica */
@@ -189,33 +193,7 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
    *
    * @param args
    */
-   public static void main(String args[]) {
 
-       try {
-           for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-               if ("Nimbus".equals(info.getName())) {
-                   javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                   break;
-               }
-           }
-       } catch (ClassNotFoundException ex) {
-           java.util.logging.Logger.getLogger(GUIConsultaProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-       } catch (InstantiationException ex) {
-           java.util.logging.Logger.getLogger(GUIConsultaProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-       } catch (IllegalAccessException ex) {
-           java.util.logging.Logger.getLogger(GUIConsultaProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-       } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-           java.util.logging.Logger.getLogger(GUIConsultaProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-       }
-
-       //Exibe a janela de Consulta de Produtos
-
-       java.awt.EventQueue.invokeLater(new Runnable() {
-           public void run() {
-               new GUIConsultaProduto().setVisible(true);
-           }
-       });
-   }
 
     // Atributos que foram usados para fazer os componentes da janela da Consulta de Produtos
     private javax.swing.JButton jBConsultar;
@@ -234,5 +212,52 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
     private javax.swing.JTextField jTCodigo;
     private javax.swing.JTextField jTEstoque;
 
+
+
+    // Método que define qual o LookAndFeel da página
+    public void setLookAndFeel(int LAF) {
+        switch (LAF) {
+            case 1:
+                try {
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                         | UnsupportedLookAndFeelException e3) {
+                    e3.printStackTrace();
+                }
+                break;
+            case 2:
+                try {
+                    UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                         | UnsupportedLookAndFeelException e2) {
+                    e2.printStackTrace();
+                }
+                break;
+            case 3:
+                try {
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                         | UnsupportedLookAndFeelException e1) {
+                    e1.printStackTrace();
+                }
+                break;
+            case 4:
+                try {
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                         | UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    public int getLookAndFeel () {
+        return setLookAndFeel;
+    }
 }
+
+
+
 

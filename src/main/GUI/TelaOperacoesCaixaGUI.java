@@ -1,3 +1,6 @@
+package main.GUI;
+
+import main.GUI.CaixaGUI;
 import main.caixa.Caixa;
 import main.exceptions.*;
 import main.funcionario.Funcionario;
@@ -106,7 +109,7 @@ public class TelaOperacoesCaixaGUI extends JFrame {
         caixaAtual = null;
         JOptionPane.showMessageDialog(this, "Caixa fechado com sucesso!");
         dispose();
-        CaixaGUI caixaGUI = new CaixaGUI();
+        CaixaGUI caixaGUI = new CaixaGUI(2);
         caixaGUI.setVisible(true);
     }
 

@@ -1,3 +1,5 @@
+package main.GUI;
+
 import main.exceptions.CodigoInvalidoException;
 import main.exceptions.ProdutoNaoCadastradoException;
 import main.repository.IProdutoRepository;

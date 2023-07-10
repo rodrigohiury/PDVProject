@@ -1,3 +1,5 @@
+package main.GUI;
+
 import main.caixa.Caixa;
 import main.exceptions.*;
 import main.funcionario.Funcionario;
