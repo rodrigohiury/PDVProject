@@ -29,7 +29,10 @@ public class GUIRemoverProduto extends JFrame {
 	private JTextField jTCodigo;
 
 	// Cria a GUI de cadastramento
-	public GUIRemoverProduto() {
+	public GUIRemoverProduto(int LAF) {
+		
+		this.setLookAndFeel(LAF);
+		
 		// Funcionamento dos botões
 		jBCancel.addActionListener(new ActionListener() {
 			@Override
@@ -54,7 +57,7 @@ public class GUIRemoverProduto extends JFrame {
 		
 		setType(Type.POPUP);
 		setTitle("REMOVER PRODUTO");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 568, 318);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -88,4 +91,44 @@ public class GUIRemoverProduto extends JFrame {
 		
 		this.setVisible(true);
 	}
+	
+	// Método que define qual o LookAndFeel da página
+	  	public void setLookAndFeel(int LAF) {
+	  		switch (LAF) {
+	  		case 1:
+	  			try {
+	  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+	  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+	  					| UnsupportedLookAndFeelException e3) {
+	  				e3.printStackTrace();
+	  			}
+	  			break;
+	  		case 2:
+	  			try {
+	  				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+	  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+	  					| UnsupportedLookAndFeelException e2) {
+	  				e2.printStackTrace();
+	  			}
+	  			break;
+	  		case 3:
+	  			try {
+	  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+	  					| UnsupportedLookAndFeelException e1) {
+	  				e1.printStackTrace();
+	  			}
+	  			break;
+	  		case 4:
+	  			try {
+	  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+	  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+	  					| UnsupportedLookAndFeelException e) {
+	  				e.printStackTrace();
+	  			}
+	  			break;
+	  		default:
+	  			break;
+	  		}
+	  	}
 }

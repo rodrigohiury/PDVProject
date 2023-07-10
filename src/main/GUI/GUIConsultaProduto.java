@@ -1,5 +1,3 @@
-package main.GUI;
-
 import main.exceptions.CodigoInvalidoException;
 import main.exceptions.ProdutoNaoCadastradoException;
 import main.repository.ProdutoRepository;
@@ -23,7 +21,10 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
          * GUIConsultaProduto gui = new GUIConsultaProduto()
          */
         ProdutoRepository produtos= ProdutoRepository.getInstanceLoja();
-        public GUIConsultaProduto() {initComponents();}
+        public GUIConsultaProduto(int LAF) {
+        	this.setLookAndFeel(LAF);
+        	initComponents();
+        }
 
     /* Este método instancia, configura, adiciona e cria os ActionListener de cada componente
  da interface gráfica */
@@ -158,6 +159,7 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
 
         pack();
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     // Configuração dos ActionPerformed
@@ -183,10 +185,67 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
     private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {
         jTCodigo.setText("");
     }
-   /**
-   *
-   * @param args
-   */
+
+    // Atributos que foram usados para fazer os componentes da janela da Consulta de Produtos
+    private javax.swing.JButton jBConsultar;
+    private javax.swing.JButton jBLimpar;
+    private javax.swing.JLabel jLNome;
+    private javax.swing.JLabel jLFornecedor;
+    private javax.swing.JLabel jLPrecoVenda;
+    private javax.swing.JLabel jLPrecoCusto;
+    private javax.swing.JLabel jLCodigoProduto;
+    private javax.swing.JLabel jLEstoque;
+
+    private javax.swing.JTextField jTNome;
+    private javax.swing.JTextField jTFornecedor;
+    private javax.swing.JTextField jTPrecoVenda;
+    private javax.swing.JTextField jTPrecoCusto;
+    private javax.swing.JTextField jTCodigo;
+    private javax.swing.JTextField jTEstoque;
+
+    // Método que define qual o LookAndFeel da página
+  	public void setLookAndFeel(int LAF) {
+  		switch (LAF) {
+  		case 1:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e3) {
+  				e3.printStackTrace();
+  			}
+  			break;
+  		case 2:
+  			try {
+  				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e2) {
+  				e2.printStackTrace();
+  			}
+  			break;
+  		case 3:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e1) {
+  				e1.printStackTrace();
+  			}
+  			break;
+  		case 4:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e) {
+  				e.printStackTrace();
+  			}
+  			break;
+  		default:
+  			break;
+  		}
+  	}
+}
+
+/*
+ * 
    public static void main(String args[]) {
 
        try {
@@ -214,23 +273,8 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
            }
        });
    }
+ * 
+ * 
+ */
 
-    // Atributos que foram usados para fazer os componentes da janela da Consulta de Produtos
-    private javax.swing.JButton jBConsultar;
-    private javax.swing.JButton jBLimpar;
-    private javax.swing.JLabel jLNome;
-    private javax.swing.JLabel jLFornecedor;
-    private javax.swing.JLabel jLPrecoVenda;
-    private javax.swing.JLabel jLPrecoCusto;
-    private javax.swing.JLabel jLCodigoProduto;
-    private javax.swing.JLabel jLEstoque;
-
-    private javax.swing.JTextField jTNome;
-    private javax.swing.JTextField jTFornecedor;
-    private javax.swing.JTextField jTPrecoVenda;
-    private javax.swing.JTextField jTPrecoCusto;
-    private javax.swing.JTextField jTCodigo;
-    private javax.swing.JTextField jTEstoque;
-
-}
 

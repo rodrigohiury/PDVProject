@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.GUI;
 
 import main.exceptions.NaoHaProdutosException;
 import main.repository.ProdutoRepository;
@@ -22,7 +21,10 @@ public class GUITableListagemProdutos {
    //Intanciação da Produto pelo Singleton
    ProdutoRepository produto= ProdutoRepository.getInstanceLoja();
 
-   public GUITableListagemProdutos(){
+   public GUITableListagemProdutos(int LAF){
+	   
+	   this.setLookAndFeel(LAF);
+	   
        ArrayList<Object> linhas = new ArrayList<>();
        DefaultTableModel produtosTableModel = new DefaultTableModel();
 
@@ -56,5 +58,45 @@ public class GUITableListagemProdutos {
        tabelaVeiculos.setVisible(true);
 
    }
+   
+   // Método que define qual o LookAndFeel da página
+  	public void setLookAndFeel(int LAF) {
+  		switch (LAF) {
+  		case 1:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e3) {
+  				e3.printStackTrace();
+  			}
+  			break;
+  		case 2:
+  			try {
+  				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e2) {
+  				e2.printStackTrace();
+  			}
+  			break;
+  		case 3:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e1) {
+  				e1.printStackTrace();
+  			}
+  			break;
+  		case 4:
+  			try {
+  				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+  			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+  					| UnsupportedLookAndFeelException e) {
+  				e.printStackTrace();
+  			}
+  			break;
+  		default:
+  			break;
+  		}
+  	}
 
 }
