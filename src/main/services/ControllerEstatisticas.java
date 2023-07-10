@@ -166,7 +166,14 @@ public class ControllerEstatisticas {
                     produtosVendidosPeriodo.put(produto.getCodigo(), quantidadeVendida);
                 }
             }
-            return new ArrayList<>(produtosVendidosPeriodo.entrySet());
+            List<Map.Entry<String, Float>> produtosAchados = new ArrayList<>(produtosVendidosPeriodo.entrySet());
+            Collections.sort(produtosAchados, new Comparator<Map.Entry<String, Float>>() {
+                @Override
+                public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+            return produtosAchados;
         }else {
             return null;
         }
