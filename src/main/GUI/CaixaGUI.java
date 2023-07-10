@@ -27,11 +27,6 @@ public class CaixaGUI extends JFrame {
     private JTextField txtFuncionario;
     private JButton btnAbrirCaixa;
     private JButton btnFecharCaixa;
-    private JButton btnNovaVenda;
-    private JButton btnAdicionarFormaPagamento;
-    private JButton btnGerarNotaFiscal;
-    private JButton btnSangrarCaixa;
-    private JButton btnReforcarCaixa;
     private JTextArea txtStatus;
 
     public CaixaGUI() {
@@ -47,11 +42,6 @@ public class CaixaGUI extends JFrame {
 
         btnAbrirCaixa = new JButton("Abrir Caixa");
         btnFecharCaixa = new JButton("Fechar Caixa");
-        btnNovaVenda = new JButton("Nova Venda");
-        btnAdicionarFormaPagamento = new JButton("Adicionar Forma de Pagamento");
-        btnGerarNotaFiscal = new JButton("Gerar Nota Fiscal da Última Venda");
-        btnSangrarCaixa = new JButton("Sangrar Caixa");
-        btnReforcarCaixa = new JButton("Reforçar Caixa");
 
         txtStatus = new JTextArea(10, 30);
         txtStatus.setEditable(false);
@@ -62,11 +52,6 @@ public class CaixaGUI extends JFrame {
         add(txtFuncionario);
         add(btnAbrirCaixa);
         add(btnFecharCaixa);
-        add(btnNovaVenda);
-        add(btnAdicionarFormaPagamento);
-        add(btnGerarNotaFiscal);
-        add(btnSangrarCaixa);
-        add(btnReforcarCaixa);
         add(scrollPane);
 
         btnAbrirCaixa.addActionListener(new ActionListener() {
@@ -82,44 +67,9 @@ public class CaixaGUI extends JFrame {
                 fecharCaixa();
             }
         });
-
-        btnNovaVenda.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                novaVenda();
-            }
-        });
-
-        btnAdicionarFormaPagamento.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adicionarFormaPagamento();
-            }
-        });
-
-        btnGerarNotaFiscal.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gerarNotaFiscal();
-            }
-        });
-
-        btnSangrarCaixa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sangrarCaixa();
-            }
-        });
-
-        btnReforcarCaixa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                reforcarCaixa();
-            }
-        });
     }
-    
-    private void abrirCaixa() {
+
+    private void abrirCaixa(){
         String nomeFuncionario = txtFuncionario.getText();
 
         if (nomeFuncionario.isEmpty()) {
@@ -140,11 +90,15 @@ public class CaixaGUI extends JFrame {
             caixaRepository.inserirCaixa(caixaAtual);
             atualizarStatus("Caixa aberto:\n" + getInformacoesCaixa(caixaAtual));
             JOptionPane.showMessageDialog(this, "Caixa aberto com sucesso!");
+
+            // Redirecionar para a tela de operações de caixa
+            dispose();
+            TelaOperacoesCaixaGUI telaOperacoesCaixaGUI = new TelaOperacoesCaixaGUI(caixaAtual);
+            telaOperacoesCaixaGUI.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao abrir o caixa.");
         }
     }
-
 
     private void fecharCaixa() {
         if (caixaAtual == null) {
@@ -157,109 +111,6 @@ public class CaixaGUI extends JFrame {
         atualizarStatus("Caixa fechado:\n" + getInformacoesCaixa(caixaAtual));
         caixaAtual = null;
         JOptionPane.showMessageDialog(this, "Caixa fechado com sucesso!");
-    }
-
-    private void novaVenda() {
-        if (caixaAtual == null) {
-            JOptionPane.showMessageDialog(this, "Não há caixa aberto.");
-            return;
-        }
-
-        // Aqui você pode adicionar a lógica para criar uma nova venda
-        // Pode ser aberta uma nova janela ou diálogo para adicionar produtos à venda
-
-        JOptionPane.showMessageDialog(this, "Nova venda criada.");
-    }
-
-    private void adicionarFormaPagamento() {
-        if (caixaAtual == null) {
-            JOptionPane.showMessageDialog(this, "Não há caixa aberto.");
-            return;
-        }
-
-        // Aqui você pode adicionar a lógica para adicionar uma nova forma de pagamento ao caixa
-        // Pode ser aberta uma nova janela ou diálogo para inserir a forma de pagamento
-
-        JOptionPane.showMessageDialog(this, "Forma de pagamento adicionada.");
-    }
-
-    private void gerarNotaFiscal() {
-        if (caixaAtual == null) {
-            JOptionPane.showMessageDialog(this, "Não há caixa aberto.");
-            return;
-        }
-
-        ArrayList<Venda> vendasDoDia = caixaAtual.getVendasDoDia();
-        if (vendasDoDia.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Não há vendas realizadas.");
-            return;
-        }
-
-        Venda ultimaVenda = vendasDoDia.get(vendasDoDia.size() - 1);
-        String notaFiscal = caixaAtual.gerarNotaFiscal(ultimaVenda);
-
-        JOptionPane.showMessageDialog(this, "Nota Fiscal da Última Venda:\n\n" + notaFiscal);
-    }
-
-    private void sangrarCaixa() {
-        if (caixaAtual == null) {
-            JOptionPane.showMessageDialog(this, "Não há caixa aberto.");
-            return;
-        }
-
-        String valorSangriaText = JOptionPane.showInputDialog(this, "Digite o valor da sangria:");
-        if (valorSangriaText == null || valorSangriaText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Valor inválido.");
-            return;
-        }
-
-        float valorSangria;
-        try {
-            valorSangria = Float.parseFloat(valorSangriaText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Valor inválido.");
-            return;
-        }
-        try {
-            caixaAtual.sangrarCaixa(valorSangria);
-            caixaRepository.alterarCaixa(caixaAtual);
-            atualizarStatus("Sangria realizada:\n" + getInformacoesCaixa(caixaAtual));
-            JOptionPane.showMessageDialog(this, "Sangria realizada com sucesso!");
-        } catch (ValorSangriaInvalidoException e) {
-            JOptionPane.showMessageDialog(this, "Valor de sangria inválido.");
-        } catch (SangriaInvalidaException e) {
-            JOptionPane.showMessageDialog(this, "Sangria não permitida. Valor superior ao valor em caixa.");
-        }
-    }
-
-    private void reforcarCaixa() {
-        if (caixaAtual == null) {
-            JOptionPane.showMessageDialog(this, "Não há caixa aberto.");
-            return;
-        }
-
-        String valorReforcoText = JOptionPane.showInputDialog(this, "Digite o valor do reforço:");
-        if (valorReforcoText == null || valorReforcoText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Valor inválido.");
-            return;
-        }
-
-        float valorReforco;
-        try {
-            valorReforco = Float.parseFloat(valorReforcoText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Valor inválido.");
-            return;
-        }
-
-        try {
-            caixaAtual.reforcarCaixa(valorReforco);
-            caixaRepository.alterarCaixa(caixaAtual);
-            atualizarStatus("Reforço realizado:\n" + getInformacoesCaixa(caixaAtual));
-            JOptionPane.showMessageDialog(this, "Reforço realizado com sucesso!");
-        } catch (ValorReforcoInvalidoException e) {
-            JOptionPane.showMessageDialog(this, "Valor de reforço inválido.");
-        }
     }
 
     private String getInformacoesCaixa(Caixa caixa) {
@@ -278,15 +129,5 @@ public class CaixaGUI extends JFrame {
 
     private void atualizarStatus(String mensagem) {
         txtStatus.setText(mensagem);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                CaixaGUI caixaGUI = new CaixaGUI();
-                caixaGUI.setVisible(true);
-            }
-        });
     }
 }

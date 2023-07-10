@@ -125,4 +125,15 @@ public class Venda extends Transacao implements Serializable {
     public static void setSequencia(int sequencia) {
         Venda.sequencia = sequencia;
     }
+    
+    public void finalizarVenda(float valorPago) {
+        if (!this.isFinalizada()) {
+            if (valorPago >= this.getValor()) {
+                this.valorPago = valorPago;
+                this.troco = this.getValor() - this.valorPago;
+                this.finalizada = true;
+            }
+        }
+    }
+    
 }
