@@ -12,10 +12,18 @@ import java.util.*;
 
 public class ControllerEstatisticas {
 
-    private IVendasRepository repositorioVendas;
+    private static IVendasRepository repositorioVendas;
+    private static ControllerEstatisticas instance;
 
-    public ControllerEstatisticas(IVendasRepository repositorioVendas) {
+    private ControllerEstatisticas(IVendasRepository repositorioVendas) {
         this.repositorioVendas = repositorioVendas;
+    }
+
+    public static ControllerEstatisticas getInstance(IVendasRepository repositorioVendas) {
+        if (instance == null){
+            instance = new ControllerEstatisticas(repositorioVendas);
+        }
+        return instance;
     }
 
     public void inserirVenda(Venda venda) throws VendaInvalidaException {

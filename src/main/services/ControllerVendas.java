@@ -13,10 +13,18 @@ import java.util.Collection;
 
 public class ControllerVendas {
 
-    private IVendasRepository repVendas;
+    private static IVendasRepository repVendas;
+    private static ControllerVendas instance;
 
-    public ControllerVendas(IVendasRepository repVendas) {
+    private ControllerVendas(IVendasRepository repVendas) {
         this.repVendas = repVendas;
+    }
+
+    public static ControllerVendas getInstance(IVendasRepository repVendas) {
+        if (instance == null){
+            instance = new ControllerVendas(repVendas);
+        }
+        return instance;
     }
 
     public void adicionarVenda(Venda venda) throws VendaDuplicadaException, VendaInvalidaException {
