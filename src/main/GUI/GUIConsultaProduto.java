@@ -253,9 +253,6 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
                 break;
         }
     }
-    public int getLookAndFeel () {
-        return setLookAndFeel;
-    }
 }
 
 
