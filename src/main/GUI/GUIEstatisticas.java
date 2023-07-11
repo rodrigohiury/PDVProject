@@ -33,10 +33,10 @@ public class GUIEstatisticas extends JFrame {
 		
 		this.setLookAndFeel(LAF);
 		
-		setOpacity(0.5f);
+		setOpacity(1f);
 		setType(Type.POPUP);
 		setTitle("ESTATÍSTICAS");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 447, 581);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,7 +71,7 @@ public class GUIEstatisticas extends JFrame {
         table_1 = new JTable();
         table_1.setModel(new DefaultTableModel(
         	new Object[][] {
-        		{"cógigo do produto", new Integer(54)},
+        		{"c\u00F3gigo do produto", new Integer(54)},
         		{"", null},
         		{null, null},
         		{null, null},
@@ -80,15 +80,7 @@ public class GUIEstatisticas extends JFrame {
         	new String[] {
         		"PRODUTO", "N\u00BA VENDAS"
         	}
-        ) {
-			private static final long serialVersionUID = 1L;
-			boolean[] columnEditables = new boolean[] {
-        		false, false
-        	};
-        	public boolean isCellEditable(int row, int column) {
-        		return columnEditables[column];
-        	}
-        });
+        ));
         table_1.getColumnModel().getColumn(0).setResizable(false);
         table_1.setBounds(54, 401, 336, 80);
         contentPane.add(table_1);
@@ -174,6 +166,7 @@ public class GUIEstatisticas extends JFrame {
         });
         jBAtualizar.setBounds(176, 502, 91, 32);
         contentPane.add(jBAtualizar);
+        setVisible(true);
 	}
 	
 	// Método que define qual o LookAndFeel da página
