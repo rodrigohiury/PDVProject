@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setTitle("BEM VINDO");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 776, 416);
+        setBounds(100, 100, 776, 489);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
         jLCadastros.setBounds(201, 18, 82, 13);
         contentPane.add(jLCadastros);
 
-        JLabel jLEstatisticas = new JLabel("ESTATÍSTICAS / CAIXA / CONFIGURAÇÕES");
+        JLabel jLEstatisticas = new JLabel("ESTATÍSTICAS / CAIXA / OUTROS");
         jLEstatisticas.setFont(new Font("Nirmala UI", Font.PLAIN, 12));
         jLEstatisticas.setHorizontalAlignment(SwingConstants.CENTER);
         jLEstatisticas.setBounds(482, 18, 259, 13);
@@ -58,8 +58,7 @@ public class MainFrame extends JFrame {
                 GUICadastrarProduto janela_1 = new GUICadastrarProduto(LookAndFeelSettings);
             }
         });
-        jBCadastrarProduto.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCadastroProdutos.png"));
+        jBCadastrarProduto.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconCadastroProdutos.png")));
         jBCadastrarProduto.setBounds(36, 156, 201, 70);
         contentPane.add(jBCadastrarProduto);
 
@@ -69,8 +68,7 @@ public class MainFrame extends JFrame {
                 GUIAlterarPreco janela_2 = new GUIAlterarPreco(LookAndFeelSettings);
             }
         });
-        jBAlterarPreco.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconAlterarPreco.jpg"));
+        jBAlterarPreco.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconAlterarPreco.jpg")));
         jBAlterarPreco.setBounds(258, 65, 201, 70);
         contentPane.add(jBAlterarPreco);
 
@@ -80,9 +78,8 @@ public class MainFrame extends JFrame {
                 GUIRemoverProduto janela_3 = new GUIRemoverProduto(LookAndFeelSettings);
             }
         });
-        jBRemoverProduto.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconRemoverProduto.jpg"));
-        jBRemoverProduto.setBounds(465, 156, 201, 70);
+        jBRemoverProduto.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconRemoverProduto.jpg")));
+        jBRemoverProduto.setBounds(146, 246, 201, 70);
         contentPane.add(jBRemoverProduto);
 
         JButton jBListarProdutos = new JButton("Listar Produtos");
@@ -91,8 +88,7 @@ public class MainFrame extends JFrame {
                 GUITableListagemProdutos janela_4 = new GUITableListagemProdutos(LookAndFeelSettings);
             }
         });
-        jBListarProdutos.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconListarProdutos.png"));
+        jBListarProdutos.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconListarProdutos.png")));
         jBListarProdutos.setBounds(258, 156, 201, 70);
         contentPane.add(jBListarProdutos);
 
@@ -102,8 +98,7 @@ public class MainFrame extends JFrame {
                 GUIConsultaProduto janela_5 = new GUIConsultaProduto(LookAndFeelSettings);
             }
         });
-        jBConsultarProdutos.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConsultaProduto.jpg"));
+        jBConsultarProdutos.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconConsultaProduto.jpg")));
         jBConsultarProdutos.setBounds(36, 65, 201, 70);
         contentPane.add(jBConsultarProdutos);
 
@@ -119,14 +114,12 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        jBEstatisticas.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconEstatisticas.png"));
+        jBEstatisticas.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconEstatisticas.png")));
         jBEstatisticas.setBounds(506, 65, 201, 70);
         contentPane.add(jBEstatisticas);
 
         JButton jBCaixa = new JButton("Caixa");
-        jBCaixa.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCaixa.png"));
+        jBCaixa.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconCaixa.png")));
         jBCaixa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CaixaGUI janela_7 = new CaixaGUI(LookAndFeelSettings);
@@ -197,22 +190,20 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        jBConfiguracoes.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConfiguracao.jpg"));
-        jBConfiguracoes.setBounds(506, 246, 201, 70);
+        jBConfiguracoes.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconConfiguracao.jpg")));
+        jBConfiguracoes.setBounds(506, 341, 201, 70);
         contentPane.add(jBConfiguracoes);
 
-        JButton btnFuncionarios = new JButton("Funcionários");
-        btnFuncionarios.addActionListener(new ActionListener() {
+        JButton jBFuncionarios = new JButton("Funcionários");
+        jBFuncionarios.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FuncionarioGUI funcionarioGUI = new FuncionarioGUI();
                 funcionarioGUI.setVisible(true);
             }
         });
-        btnFuncionarios.setIcon(new ImageIcon(
-                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconFuncionarios.png"));
-        btnFuncionarios.setBounds(36, 246, 201, 70);
-        contentPane.add(btnFuncionarios);
+        jBFuncionarios.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconFuncionario.png")));
+        jBFuncionarios.setBounds(506, 246, 201, 70);
+        contentPane.add(jBFuncionarios);
 
         this.setVisible(true);
     }
