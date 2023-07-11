@@ -7,6 +7,9 @@ import javax.swing.border.EmptyBorder;
 import main.GUI.GUIConsultaProduto;
 import main.exceptions.CodigoInvalidoException;
 import main.exceptions.ProdutoNaoCadastradoException;
+import main.repository.ProdutoRepository;
+import main.repository.VendasRepository;
+import main.services.ControllerEstatisticas;
 
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -103,7 +106,7 @@ public class MainFrame extends JFrame {
         jBEstatisticas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    GUIEstatisticas janela_6 = new GUIEstatisticas(null, null, LookAndFeelSettings);
+                    GUIEstatisticas janela_6 = new GUIEstatisticas(ControllerEstatisticas.getInstance(VendasRepository.getInstance()), ProdutoRepository.getInstanceLoja(), LookAndFeelSettings);
                 } catch (HeadlessException e1) {
                     e1.printStackTrace();
                 } catch (ProdutoNaoCadastradoException e1) {
