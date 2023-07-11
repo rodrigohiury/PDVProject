@@ -195,7 +195,7 @@ public class ProdutoRepository implements IProdutoRepository,Serializable{
     @Override
     public boolean salvaProdutoRepository() {
         try {
-            FileOutputStream writeData = new FileOutputStream("./src/arquivos/produto/produtos.ser");
+            FileOutputStream writeData = new FileOutputStream("./src/archive/produtos/produtos.ser");
             ObjectOutputStream obj = new ObjectOutputStream(writeData);
             obj.writeObject(produtos);
             obj.flush();
@@ -212,14 +212,14 @@ public class ProdutoRepository implements IProdutoRepository,Serializable{
     @Override
     public void lerProdutoRepository() {
         try {
-            File arquivo = new File("./src/arquivos/produto/produtos.ser");
+            File arquivo = new File("./src/archive/produtos/produtos.ser");
             if (!arquivo.createNewFile()) {
-                FileInputStream leitor = new FileInputStream("./src/arquivos/produto/produtos.ser");
+                FileInputStream leitor = new FileInputStream("./src/archive/produtos/produtos.ser");
                 ObjectInputStream obj = new ObjectInputStream(leitor);
                 produtos = (ArrayList<Produto>) obj.readObject();
                 obj.close();
             } else {
-                FileOutputStream writeData = new FileOutputStream("./src/arquivos/produto/produtos.ser");
+                FileOutputStream writeData = new FileOutputStream("./src/archive/produtos/produtos.ser");
                 ObjectOutputStream obj = new ObjectOutputStream(writeData);
                 obj.writeObject(produtos);
                 obj.close();
