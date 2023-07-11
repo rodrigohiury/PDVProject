@@ -2,18 +2,31 @@ package main.repository;
 
 import main.exceptions.NaoHaFuncionariosException;
 import main.funcionario.Funcionario;
+import main.transacao.Venda;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class FuncionarioRepository implements IFuncionarioRepository{
 
-    private Set<Funcionario> funcionariosCadastrados = new TreeSet<>();
+    private static Set<Funcionario> funcionariosCadastrados = new TreeSet<>();
     private static FuncionarioRepository instance;
+    private static String pathFuncionarioDiretorio = "./src/archive/funcionarios";
+    private static String pathFuncionarioArquivo = pathFuncionarioDiretorio + "/funcionarios.fun";
+    private static File funcionariosDiretorio = new File(pathFuncionarioDiretorio);
+    private static File funcionariosArquivo = new File(pathFuncionarioArquivo);
 
     private FuncionarioRepository() {
         instance = new FuncionarioRepository();
+        if (!funcionariosDiretorio.exists()){
+            funcionariosDiretorio.mkdir();
+        }
+        if (funcionariosArquivo.exists()){
+            this.deserializeFuncionarios();
+        }
     }
 
     public static FuncionarioRepository getInstance(){
@@ -28,11 +41,13 @@ public class FuncionarioRepository implements IFuncionarioRepository{
     @Override
     public void inserirFuncionario(Funcionario funcionario) {
         funcionariosCadastrados.add(funcionario);
+        serializeFuncionarios();
     }
 
     @Override
     public void removerFuncionario(Funcionario funcionario) {
         funcionariosCadastrados.remove(funcionario);
+        serializeFuncionarios();
     }
 
     @Override
@@ -41,6 +56,7 @@ public class FuncionarioRepository implements IFuncionarioRepository{
         if (funcionarioProcurado != null){
             funcionariosCadastrados.remove(funcionarioProcurado);
             funcionariosCadastrados.add(funcionario);
+            serializeFuncionarios();
         }else {
             throw new NaoHaFuncionariosException();
         }
@@ -90,6 +106,7 @@ public class FuncionarioRepository implements IFuncionarioRepository{
     @Override
     public void incrementNumeroDeVendas(String chave, int numeroDeVendas){
         this.buscarFuncionario(chave).incrementNumeroDeVendas(numeroDeVendas);
+        serializeFuncionarios();
     }
 
     @Override
@@ -100,5 +117,28 @@ public class FuncionarioRepository implements IFuncionarioRepository{
     @Override
     public void setNumeroDeVendas(String chave, int numeroDeVendas){
         this.buscarFuncionario(chave).setNumeroDeVendas(numeroDeVendas);
+        serializeFuncionarios();
+    }
+
+    private void serializeFuncionarios(){
+        try {
+            FileOutputStream gravador = new FileOutputStream(pathFuncionarioArquivo);
+            ObjectOutputStream conversor = new ObjectOutputStream(gravador);
+            conversor.writeObject(FuncionarioRepository.funcionariosCadastrados);
+            conversor.flush();
+            conversor.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void deserializeFuncionarios(){
+        try {
+            FileInputStream leitor = new FileInputStream(pathFuncionarioArquivo);
+            ObjectInputStream conversor = new ObjectInputStream(leitor);
+            FuncionarioRepository.funcionariosCadastrados = (Set<Funcionario>) conversor.readObject();
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 }

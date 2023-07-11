@@ -5,20 +5,28 @@ import main.repository.*;
 
 public class ControllerSupermercado {
 
-    public ControllerEstatisticas estatisticas;
-    public ControllerVendas vendas;
-    private IVendasRepository vendasRepository;
-    public IProdutoRepository produtos;
-    public IFuncionarioRepository funcionarios;
+    public static ControllerEstatisticas estatisticas;
+    public static ControllerVendas vendas;
+    private static IVendasRepository vendasRepository;
+    public static IProdutoRepository produtos;
+    public static IFuncionarioRepository funcionarios;
+    private static ControllerSupermercado instance;
 
-    public ControllerSupermercado() throws ClassNotFoundException {
-        this.vendasRepository = new VendasRepository();
-        this.estatisticas = new ControllerEstatisticas(this.vendasRepository);
-        this.vendas = new ControllerVendas(this.vendasRepository);
-        this.produtos = ProdutoRepository.getInstanceLoja();
-        this.funcionarios = FuncionarioRepository.getInstance();
+    private ControllerSupermercado() throws ClassNotFoundException {
+        vendasRepository = VendasRepository.getInstance();
+        estatisticas = ControllerEstatisticas.getInstance(vendasRepository);
+        vendas = ControllerVendas.getInstance(vendasRepository);
+        produtos = ProdutoRepository.getInstanceLoja();
+        funcionarios = FuncionarioRepository.getInstance();
         if (funcionarios.listarFuncionarios().isEmpty()){
             funcionarios.inserirFuncionario(Administrador.getInstance());
         }
+    }
+
+    public static ControllerSupermercado getInstance() throws ClassNotFoundException {
+        if (instance == null){
+            instance = new ControllerSupermercado();
+        }
+        return instance;
     }
 }

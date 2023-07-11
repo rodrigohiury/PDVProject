@@ -16,8 +16,9 @@ public class VendasRepository implements IVendasRepository {
     private File vendaDiretorio;
     private File vendaArquivo;
     private File produtosArquivo;
+    private static VendasRepository instance;
 
-    public VendasRepository() throws ClassNotFoundException {
+    private VendasRepository() throws ClassNotFoundException {
         vendasCadastradas = new ArrayList<>();
         produtosMaisVendidos = new TreeMap<>();
         pathDiretorio = "./src/archive/vendas";
@@ -36,6 +37,13 @@ public class VendasRepository implements IVendasRepository {
             this.deserializeProdutos();
         }
         Venda.setSequencia(this.getUltimaSequencia());
+    }
+
+    public static VendasRepository getInstance() throws ClassNotFoundException {
+        if (instance == null){
+            instance = new VendasRepository();
+        }
+        return instance;
     }
 
     @Override

@@ -12,10 +12,18 @@ import java.util.*;
 
 public class ControllerEstatisticas {
 
-    private IVendasRepository repositorioVendas;
+    private static IVendasRepository repositorioVendas;
+    private static ControllerEstatisticas instance;
 
-    public ControllerEstatisticas(IVendasRepository repositorioVendas) {
+    private ControllerEstatisticas(IVendasRepository repositorioVendas) {
         this.repositorioVendas = repositorioVendas;
+    }
+
+    public static ControllerEstatisticas getInstance(IVendasRepository repositorioVendas) {
+        if (instance == null){
+            instance = new ControllerEstatisticas(repositorioVendas);
+        }
+        return instance;
     }
 
     public void inserirVenda(Venda venda) throws VendaInvalidaException {
@@ -166,7 +174,14 @@ public class ControllerEstatisticas {
                     produtosVendidosPeriodo.put(produto.getCodigo(), quantidadeVendida);
                 }
             }
-            return new ArrayList<>(produtosVendidosPeriodo.entrySet());
+            List<Map.Entry<String, Float>> produtosAchados = new ArrayList<>(produtosVendidosPeriodo.entrySet());
+            Collections.sort(produtosAchados, new Comparator<Map.Entry<String, Float>>() {
+                @Override
+                public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+            return produtosAchados;
         }else {
             return null;
         }
