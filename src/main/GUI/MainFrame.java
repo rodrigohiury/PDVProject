@@ -200,6 +200,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 FuncionarioGUI funcionarioGUI = new FuncionarioGUI();
                 funcionarioGUI.setVisible(true);
+
+
             }
         });
         btnFuncionarios.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconFuncionarios.png"));
