@@ -56,6 +56,7 @@ public class GUICadastrarProduto extends JFrame {
                     Produto produto = new Produto(jTNome.getText(), Float.valueOf(jTPreco.getText()).floatValue(), Float.valueOf(jTCusto.getText()).floatValue(),
                     jTCodigo.getText(), Integer.valueOf(jTEstoque.getText()).intValue(), jTFornecedor.getText());
                     produtos.cadastrarProduto(produto);
+					produtos.salvaProdutoRepository();
                     JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso", "Cadastro de Produto", JOptionPane.INFORMATION_MESSAGE);
                 } catch (CodigoInvalidoException e1) {
                 	e1.printStackTrace();

@@ -68,10 +68,10 @@ public class ProdutoRepository implements IProdutoRepository,Serializable{
     @Override
     public boolean confereCodigo(String codigo) {
         boolean res = true;
-        if (codigo.length() != 7) {
+        if (codigo.length() != 4) {
             res = false;
         } else {
-            if (!codigo.substring(0, 4).matches("[0-9]*")) {
+            if(!codigo.substring(0, 3).matches("[0-9]*")){
                 res = false;
             }
             return res;
