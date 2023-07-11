@@ -10,8 +10,9 @@ public class ControllerSupermercado {
     private static IVendasRepository vendasRepository;
     public static IProdutoRepository produtos;
     public static IFuncionarioRepository funcionarios;
+    private static ControllerSupermercado instance;
 
-    public ControllerSupermercado() throws ClassNotFoundException {
+    private ControllerSupermercado() throws ClassNotFoundException {
         vendasRepository = VendasRepository.getInstance();
         estatisticas = ControllerEstatisticas.getInstance(vendasRepository);
         vendas = ControllerVendas.getInstance(vendasRepository);
@@ -20,5 +21,12 @@ public class ControllerSupermercado {
         if (funcionarios.listarFuncionarios().isEmpty()){
             funcionarios.inserirFuncionario(Administrador.getInstance());
         }
+    }
+
+    public static ControllerSupermercado getInstance() throws ClassNotFoundException {
+        if (instance == null){
+            instance = new ControllerSupermercado();
+        }
+        return instance;
     }
 }
