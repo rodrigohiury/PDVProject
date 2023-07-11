@@ -111,6 +111,7 @@ public class GUIEstatisticas extends JFrame {
         // Tem que passar o valor do faturamento quando o botão atualizar for apertado
         JTextArea jTFaturamento = new JTextArea();
         jTFaturamento.setEditable(false);
+        jTFaturamento.setText(controllerEstatisticas.getFaturamentoTotal() + "");
         jTFaturamento.setBounds(259, 160, 131, 19);
         contentPane.add(jTFaturamento);
         
@@ -118,18 +119,21 @@ public class GUIEstatisticas extends JFrame {
         JTextArea jTLucro = new JTextArea();
         jTLucro.setEditable(false);
         jTLucro.setBounds(259, 205, 131, 19);
+        jTLucro.setText(controllerEstatisticas.getLucroTotal() + "");
         contentPane.add(jTLucro);
         
         // Tem que passar o valor do ticket médio quando o botão atualizar for apertado
         JTextArea jTTicket = new JTextArea();
         jTTicket.setEditable(false);
         jTTicket.setBounds(259, 245, 131, 19);
+        jTTicket.setText(controllerEstatisticas.getTicketMedioTotal() + "");
         contentPane.add(jTTicket);
         
         // Tem que passar o valor do quantidade de vendas quando o botão atualizar for apertado
         JTextArea jTQuantidadeVendas = new JTextArea();
         jTQuantidadeVendas.setEditable(false);
         jTQuantidadeVendas.setBounds(259, 286, 131, 19);
+        jTQuantidadeVendas.setText(controllerEstatisticas.getNumeroVendasTotal() + "");
         contentPane.add(jTQuantidadeVendas);
         
         JLabel jLCodigo = new JLabel("CÓDIGO");
