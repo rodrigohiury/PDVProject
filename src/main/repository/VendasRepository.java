@@ -18,7 +18,7 @@ public class VendasRepository implements IVendasRepository {
     private File produtosArquivo;
     private static VendasRepository instance;
 
-    private VendasRepository() throws ClassNotFoundException {
+    private VendasRepository() {
         vendasCadastradas = new ArrayList<>();
         produtosMaisVendidos = new TreeMap<>();
         pathDiretorio = "./src/archive/vendas";
@@ -39,7 +39,7 @@ public class VendasRepository implements IVendasRepository {
         Venda.setSequencia(this.getUltimaSequencia());
     }
 
-    public static VendasRepository getInstance() throws ClassNotFoundException {
+    public static VendasRepository getInstance() {
         if (instance == null){
             instance = new VendasRepository();
         }
@@ -159,22 +159,22 @@ public class VendasRepository implements IVendasRepository {
         }
     }
 
-    private void deserializeVendas() throws ClassNotFoundException {
+    private void deserializeVendas() {
         try {
             FileInputStream leitor = new FileInputStream(pathArquivoVendas);
             ObjectInputStream conversor = new ObjectInputStream(leitor);
             this.vendasCadastradas = (ArrayList<Venda>) conversor.readObject();
-        }catch (IOException e){
+        }catch (IOException | ClassNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    private void deserializeProdutos() throws ClassNotFoundException {
+    private void deserializeProdutos() {
         try {
             FileInputStream leitor = new FileInputStream(pathArquivoProdutos);
             ObjectInputStream conversor = new ObjectInputStream(leitor);
             this.produtosMaisVendidos = (Map<String, Float>) conversor.readObject();
-        }catch (IOException e){
+        }catch (IOException | ClassNotFoundException e ){
             e.printStackTrace();
         }
     }
