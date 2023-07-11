@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 
@@ -157,11 +158,19 @@ public class GUIEstatisticas extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		String dataInicio = jTDataInicio.getText();
         		String dataFim = jTDataTermino.getText();
-        		
-        		Date inicio = (Date) formato.parse(dataInicio);
-        		Date fim = (Date) formato.parse(dataFim);
-        		
-        		// Agora é utilizar essas datas para atualizar o sistema que está sendo mostrado
+
+                try {
+                    Date inicio = (Date) formato.parse(dataInicio);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    Date fim = (Date) formato.parse(dataFim);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                // Agora é utilizar essas datas para atualizar o sistema que está sendo mostrado
         	}
         });
         jBAtualizar.setBounds(176, 502, 91, 32);
