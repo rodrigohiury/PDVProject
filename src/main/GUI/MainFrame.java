@@ -199,6 +199,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 FuncionarioGUI funcionarioGUI = new FuncionarioGUI();
                 funcionarioGUI.setVisible(true);
+
+
             }
         });
         jBFuncionarios.setIcon(new ImageIcon(GUIgen.class.getResource("/Icons/IconFuncionario.png")));
