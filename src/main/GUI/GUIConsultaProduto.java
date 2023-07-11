@@ -164,7 +164,7 @@ public class GUIConsultaProduto extends javax.swing.JFrame {
 
         pack();
         setLocationRelativeTo(null);
-
+        setVisible(true);
     }
         // Configuração dos ActionPerformed
     private void jTFabricanteActionPerformed(java.awt.event.ActionEvent evt) {
