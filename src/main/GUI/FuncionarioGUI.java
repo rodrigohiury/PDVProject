@@ -1,4 +1,9 @@
 package main.GUI;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import main.exceptions.NaoHaFuncionariosException;
 import main.funcionario.Administrador;
 import main.funcionario.Gerente;
@@ -6,10 +11,8 @@ import main.funcionario.Operador;
 import main.funcionario.Funcionario;
 import main.repository.FuncionarioRepository;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 public class FuncionarioGUI extends JFrame {
@@ -62,7 +65,11 @@ public class FuncionarioGUI extends JFrame {
         JFrame telaCadastro = new JFrame("Cadastro de Funcionário");
         telaCadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         telaCadastro.setSize(300, 250);
-        telaCadastro.setLayout(new FlowLayout());
+        telaCadastro.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.WEST;
 
         JLabel lblNome = new JLabel("Nome:");
         JTextField txtNome = new JTextField(20);
@@ -81,17 +88,17 @@ public class FuncionarioGUI extends JFrame {
 
         JButton btnSalvar = new JButton("Salvar");
 
-        telaCadastro.add(lblNome);
-        telaCadastro.add(txtNome);
-        telaCadastro.add(lblCpf);
-        telaCadastro.add(txtCpf);
-        telaCadastro.add(lblUsername);
-        telaCadastro.add(txtUsername);
-        telaCadastro.add(lblSenha);
-        telaCadastro.add(txtSenha);
-        telaCadastro.add(lblTipo);
-        telaCadastro.add(comboTipo);
-        telaCadastro.add(btnSalvar);
+        telaCadastro.add(lblNome, gbc);
+        telaCadastro.add(txtNome, gbc);
+        telaCadastro.add(lblCpf, gbc);
+        telaCadastro.add(txtCpf, gbc);
+        telaCadastro.add(lblUsername, gbc);
+        telaCadastro.add(txtUsername, gbc);
+        telaCadastro.add(lblSenha, gbc);
+        telaCadastro.add(txtSenha, gbc);
+        telaCadastro.add(lblTipo, gbc);
+        telaCadastro.add(comboTipo, gbc);
+        telaCadastro.add(btnSalvar, gbc);
 
         btnSalvar.addActionListener(new ActionListener() {
             @Override
