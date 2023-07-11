@@ -12,7 +12,7 @@ public class ControllerSupermercado {
     public static IFuncionarioRepository funcionarios;
     private static ControllerSupermercado instance;
 
-    private ControllerSupermercado() throws ClassNotFoundException {
+    private ControllerSupermercado() {
         vendasRepository = VendasRepository.getInstance();
         estatisticas = ControllerEstatisticas.getInstance(vendasRepository);
         vendas = ControllerVendas.getInstance(vendasRepository);
@@ -23,7 +23,7 @@ public class ControllerSupermercado {
         }
     }
 
-    public static ControllerSupermercado getInstance() throws ClassNotFoundException {
+    public static ControllerSupermercado getInstance() {
         if (instance == null){
             instance = new ControllerSupermercado();
         }

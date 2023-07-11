@@ -12,12 +12,15 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
-/** A classe <b>GUIAlterarPreco</b> é responsável por criar a interface gráfica da janela
-* de alteração de preço.
-* @author Luiz Augusto e Miguel
-* @since jul 2023
-* @version 1.0
-*/
+/**
+ * A classe <b>GUIAlterarPreco</b> é responsável por criar a interface gráfica
+ * da janela
+ * de alteração de preço.
+ * 
+ * @author Luiz Augusto e Miguel
+ * @since jul 2023
+ * @version 1.0
+ */
 
 public class MainFrame extends JFrame {
 
@@ -55,7 +58,8 @@ public class MainFrame extends JFrame {
                 GUICadastrarProduto janela_1 = new GUICadastrarProduto(LookAndFeelSettings);
             }
         });
-        jBCadastrarProduto.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCadastroProdutos.png"));
+        jBCadastrarProduto.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCadastroProdutos.png"));
         jBCadastrarProduto.setBounds(36, 156, 201, 70);
         contentPane.add(jBCadastrarProduto);
 
@@ -65,7 +69,8 @@ public class MainFrame extends JFrame {
                 GUIAlterarPreco janela_2 = new GUIAlterarPreco(LookAndFeelSettings);
             }
         });
-        jBAlterarPreco.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconAlterarPreco.jpg"));
+        jBAlterarPreco.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconAlterarPreco.jpg"));
         jBAlterarPreco.setBounds(258, 65, 201, 70);
         contentPane.add(jBAlterarPreco);
 
@@ -75,8 +80,9 @@ public class MainFrame extends JFrame {
                 GUIRemoverProduto janela_3 = new GUIRemoverProduto(LookAndFeelSettings);
             }
         });
-        jBRemoverProduto.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconRemoverProduto.jpg"));
-        jBRemoverProduto.setBounds(150, 246, 201, 70);
+        jBRemoverProduto.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconRemoverProduto.jpg"));
+        jBRemoverProduto.setBounds(465, 156, 201, 70);
         contentPane.add(jBRemoverProduto);
 
         JButton jBListarProdutos = new JButton("Listar Produtos");
@@ -85,7 +91,8 @@ public class MainFrame extends JFrame {
                 GUITableListagemProdutos janela_4 = new GUITableListagemProdutos(LookAndFeelSettings);
             }
         });
-        jBListarProdutos.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconListarProdutos.png"));
+        jBListarProdutos.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconListarProdutos.png"));
         jBListarProdutos.setBounds(258, 156, 201, 70);
         contentPane.add(jBListarProdutos);
 
@@ -95,7 +102,8 @@ public class MainFrame extends JFrame {
                 GUIConsultaProduto janela_5 = new GUIConsultaProduto(LookAndFeelSettings);
             }
         });
-        jBConsultarProdutos.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConsultaProduto.jpg"));
+        jBConsultarProdutos.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConsultaProduto.jpg"));
         jBConsultarProdutos.setBounds(36, 65, 201, 70);
         contentPane.add(jBConsultarProdutos);
 
@@ -103,24 +111,22 @@ public class MainFrame extends JFrame {
         jBEstatisticas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    GUIEstatisticas janela_6 = new GUIEstatisticas(null, null, LookAndFeelSettings);
+                    GUIEstatisticas janela_6 = new GUIEstatisticas(LookAndFeelSettings);
                 } catch (HeadlessException e1) {
                     e1.printStackTrace();
-                } catch (ProdutoNaoCadastradoException e1) {
-                    e1.printStackTrace();
-                } catch (CodigoInvalidoException e1) {
-                    e1.printStackTrace();
-                } catch (ParseException e1) {
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
         });
-        jBEstatisticas.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconEstatisticas.png"));
+        jBEstatisticas.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconEstatisticas.png"));
         jBEstatisticas.setBounds(506, 65, 201, 70);
         contentPane.add(jBEstatisticas);
 
         JButton jBCaixa = new JButton("Caixa");
-        jBCaixa.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCaixa.png"));
+        jBCaixa.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconCaixa.png"));
         jBCaixa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CaixaGUI janela_7 = new CaixaGUI(LookAndFeelSettings);
@@ -191,7 +197,8 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        jBConfiguracoes.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConfiguracao.jpg"));
+        jBConfiguracoes.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconConfiguracao.jpg"));
         jBConfiguracoes.setBounds(506, 246, 201, 70);
         contentPane.add(jBConfiguracoes);
 
@@ -204,9 +211,10 @@ public class MainFrame extends JFrame {
 
             }
         });
-        btnFuncionarios.setIcon(new ImageIcon("C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconFuncionarios.png"));
+        btnFuncionarios.setIcon(new ImageIcon(
+                "C:\\Users\\sousa\\OneDrive\\Desktop\\Projeto POO\\PDVProject\\src\\Main\\GUI\\Icons\\IconFuncionarios.png"));
         btnFuncionarios.setBounds(36, 246, 201, 70);
-        // contentPane.add(btnFuncionarios);
+        contentPane.add(btnFuncionarios);
 
         this.setVisible(true);
     }

@@ -37,7 +37,7 @@ public class CaixaGUI extends JFrame {
         setSize(400, 300);
         setLayout(new FlowLayout());
 
-        caixaRepository = new CaixaRepository();
+        caixaRepository = CaixaRepository.getInstance();
 
         JLabel lblFuncionario = new JLabel("Funcionário:");
         txtFuncionario = new JTextField(15);
