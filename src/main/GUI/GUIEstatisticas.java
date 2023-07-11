@@ -1,5 +1,10 @@
 package main.GUI;
 
+import main.exceptions.DataInseridaInvalidaException;
+import main.exceptions.PeriodoInvalidoException;
+import main.repository.VendasRepository;
+import main.services.ControllerEstatisticas;
+
 import java.awt.Font;
 
 import javax.swing.JFrame;
@@ -20,6 +25,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.zip.DataFormatException;
 
 public class GUIEstatisticas extends JFrame {
 
@@ -27,6 +35,7 @@ public class GUIEstatisticas extends JFrame {
 	private JTable table_1;
 	private JTextField jTDataInicio;
 	private JTextField jTDataTermino;
+    private ControllerEstatisticas controllerEstatisticas = ControllerEstatisticas.getInstance(VendasRepository.getInstance());
 
 
 	// Cria a janela
@@ -37,7 +46,7 @@ public class GUIEstatisticas extends JFrame {
 		setOpacity(1f);
 		setType(Type.POPUP);
 		setTitle("ESTATÍSTICAS");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 447, 581);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,7 +81,7 @@ public class GUIEstatisticas extends JFrame {
         table_1 = new JTable();
         table_1.setModel(new DefaultTableModel(
         	new Object[][] {
-        		{"c\u00F3gigo do produto", new Integer(54)},
+        		{"cógigo do produto", new Integer(54)},
         		{"", null},
         		{null, null},
         		{null, null},
@@ -81,7 +90,15 @@ public class GUIEstatisticas extends JFrame {
         	new String[] {
         		"PRODUTO", "N\u00BA VENDAS"
         	}
-        ));
+        ) {
+			private static final long serialVersionUID = 1L;
+			boolean[] columnEditables = new boolean[] {
+        		false, false
+        	};
+        	public boolean isCellEditable(int row, int column) {
+        		return columnEditables[column];
+        	}
+        });
         table_1.getColumnModel().getColumn(0).setResizable(false);
         table_1.setBounds(54, 401, 336, 80);
         contentPane.add(table_1);
@@ -156,22 +173,115 @@ public class GUIEstatisticas extends JFrame {
         JButton jBAtualizar = new JButton("Atualizar");
         jBAtualizar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		String dataInicio = jTDataInicio.getText();
-        		String dataFim = jTDataTermino.getText();
-
                 try {
-                    Date inicio = (Date) formato.parse(dataInicio);
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-                try {
-                    Date fim = (Date) formato.parse(dataFim);
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
+                    String dataInicioLida = jTDataInicio.getText().replace("/", "");
+                    String dataFimLida = jTDataTermino.getText().replace("/", "");
+                    if (dataInicioLida.length() < 8 || dataFimLida.length() < 8){
+                        throw new DataInseridaInvalidaException();
+                    }
+                    int diaInicio = Integer.parseInt(dataInicioLida.substring(0, 1));
+                    int mesInicio = Integer.parseInt(dataInicioLida.substring(2,3));
+                    int anoInicio = Integer.parseInt(dataInicioLida.substring(4,7));
+                    int diaFim = Integer.parseInt(dataFimLida.substring(0,1));
+                    int mesFim = Integer.parseInt(dataFimLida.substring(2,3));
+                    int anoFim = Integer.parseInt(dataFimLida.substring(4,7));
+                    switch (mesInicio){
+                        case 1:
+                            mesInicio = Calendar.JANUARY;
+                            break;
+                        case 2:
+                            mesInicio = Calendar.FEBRUARY;
+                            break;
+                        case 3:
+                            mesInicio = Calendar.MARCH;
+                            break;
+                        case 4:
+                            mesInicio = Calendar.APRIL;
+                            break;
+                        case 5:
+                            mesInicio = Calendar.MAY;
+                            break;
+                        case 6:
+                            mesInicio = Calendar.JUNE;
+                            break;
+                        case 7:
+                            mesInicio = Calendar.JULY;
+                            break;
+                        case 8:
+                            mesInicio = Calendar.AUGUST;
+                            break;
+                        case 9:
+                            mesInicio = Calendar.SEPTEMBER;
+                            break;
+                        case 10:
+                            mesInicio = Calendar.OCTOBER;
+                            break;
+                        case 11:
+                            mesInicio = Calendar.NOVEMBER;
+                            break;
+                        case 12:
+                            mesInicio = Calendar.DECEMBER;
+                            break;
+                        default:
+                            throw new DataInseridaInvalidaException();
 
-                // Agora é utilizar essas datas para atualizar o sistema que está sendo mostrado
-        	}
+                    }
+                    switch (mesFim){
+                        case 1:
+                            mesFim = Calendar.JANUARY;
+                            break;
+                        case 2:
+                            mesFim = Calendar.FEBRUARY;
+                            break;
+                        case 3:
+                            mesFim = Calendar.MARCH;
+                            break;
+                        case 4:
+                            mesFim = Calendar.APRIL;
+                            break;
+                        case 5:
+                            mesFim = Calendar.MAY;
+                            break;
+                        case 6:
+                            mesFim = Calendar.JUNE;
+                            break;
+                        case 7:
+                            mesFim = Calendar.JULY;
+                            break;
+                        case 8:
+                            mesFim = Calendar.AUGUST;
+                            break;
+                        case 9:
+                            mesFim = Calendar.SEPTEMBER;
+                            break;
+                        case 10:
+                            mesFim = Calendar.OCTOBER;
+                            break;
+                        case 11:
+                            mesFim = Calendar.NOVEMBER;
+                            break;
+                        case 12:
+                            mesFim = Calendar.DECEMBER;
+                            break;
+                        default:
+                            throw new DataInseridaInvalidaException();
+
+                    }
+                    Calendar dataInicio = new GregorianCalendar();
+                    Calendar dataFim = new GregorianCalendar();
+                    dataInicio.set(diaInicio, mesInicio, anoInicio, 00, 00, 00);
+                    dataFim.set(diaFim, mesFim, anoFim, 23, 59, 59);
+                    jTFaturamento.setText(controllerEstatisticas.getFaturamentoPeriodo(dataInicio, dataFim) + "");
+                    jTLucro.setText(controllerEstatisticas.getLucroPeriodo(dataInicio, dataFim) + "");
+                    jTQuantidadeVendas.setText(controllerEstatisticas.getNumeroVendasPeriodo(dataInicio, dataFim) + "");
+                    jTTicket.setText(controllerEstatisticas.getTicketMedioPeriodo(dataInicio, dataInicio) + "");
+                    // Agora é utilizar essas datas para atualizar o sistema que está sendo mostrado
+                } catch (DataInseridaInvalidaException ex) {
+                    ex.printStackTrace();
+                } catch (PeriodoInvalidoException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
         jBAtualizar.setBounds(176, 502, 91, 32);
         contentPane.add(jBAtualizar);
