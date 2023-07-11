@@ -195,7 +195,7 @@ public class ProdutoRepository implements IProdutoRepository,Serializable{
     @Override
     public boolean salvaProdutoRepository() {
         try {
-            FileOutputStream writeData = new FileOutputStream("produtos.ser");
+            FileOutputStream writeData = new FileOutputStream("./src/archive/produtos/produtos.ser");
             ObjectOutputStream obj = new ObjectOutputStream(writeData);
             obj.writeObject(produtos);
             obj.flush();
