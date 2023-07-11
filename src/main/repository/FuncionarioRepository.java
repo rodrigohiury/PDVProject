@@ -20,7 +20,6 @@ public class FuncionarioRepository implements IFuncionarioRepository{
     private static File funcionariosArquivo = new File(pathFuncionarioArquivo);
 
     private FuncionarioRepository() {
-        instance = new FuncionarioRepository();
         if (!funcionariosDiretorio.exists()){
             funcionariosDiretorio.mkdir();
         }
@@ -30,12 +29,10 @@ public class FuncionarioRepository implements IFuncionarioRepository{
     }
 
     public static FuncionarioRepository getInstance(){
-        if (instance != null){
-            return instance;
-        }else {
+        if (instance == null){
             instance = new FuncionarioRepository();
-            return instance;
         }
+        return instance;
     }
 
     @Override
