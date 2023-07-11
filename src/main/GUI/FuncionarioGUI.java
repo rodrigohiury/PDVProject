@@ -25,7 +25,7 @@ public class FuncionarioGUI extends JFrame {
 
     public FuncionarioGUI() {
         setTitle("Funcionários");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLayout(new FlowLayout());
 
