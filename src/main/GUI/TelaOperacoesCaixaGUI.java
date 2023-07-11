@@ -103,7 +103,7 @@ public class TelaOperacoesCaixaGUI extends JFrame {
 
     private void fecharCaixa() {
         caixaAtual.fecharCaixa();
-        CaixaRepository caixaRepository = new CaixaRepository();
+        CaixaRepository caixaRepository = CaixaRepository.getInstance();
         caixaRepository.alterarCaixa(caixaAtual);
         atualizarStatus("Caixa fechado:\n" + getInformacoesCaixa(caixaAtual));
         caixaAtual = null;
@@ -285,7 +285,7 @@ public class TelaOperacoesCaixaGUI extends JFrame {
 
         try {
             caixaAtual.sangrarCaixa(valorSangria);
-            CaixaRepository caixaRepository = new CaixaRepository();
+            CaixaRepository caixaRepository = CaixaRepository.getInstance();
             caixaRepository.alterarCaixa(caixaAtual);
             atualizarStatus("Sangria realizada:\n" + getInformacoesCaixa(caixaAtual));
             JOptionPane.showMessageDialog(this, "Sangria realizada com sucesso!");
@@ -312,7 +312,7 @@ public class TelaOperacoesCaixaGUI extends JFrame {
         }
         try {
             caixaAtual.reforcarCaixa(valorReforco);
-            CaixaRepository caixaRepository = new CaixaRepository();
+            CaixaRepository caixaRepository = CaixaRepository.getInstance();
             caixaRepository.alterarCaixa(caixaAtual);
             atualizarStatus("Reforço realizado:\n" + getInformacoesCaixa(caixaAtual));
             JOptionPane.showMessageDialog(this, "Reforço realizado com sucesso!");

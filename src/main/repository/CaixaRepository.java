@@ -18,7 +18,7 @@ public class CaixaRepository implements ICaixaRepository {
     private static File caixasDiretorio = new File(pathCaixasDiretorio);
     private static File caixasArquivo = new File(pathCaixasArquivo);
 
-    public CaixaRepository(){
+    private CaixaRepository(){
         if (!caixasDiretorio.exists()){
             caixasDiretorio.mkdir();
         }
