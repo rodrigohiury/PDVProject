@@ -1,28 +1,28 @@
 package main.funcionario;
 
-public class Administrador extends Funcionario{
+public class Administrador extends Funcionario {
 
     private static Administrador adminInstance;
 
-    private Administrador() {
-        super("admin", "admin", "", "");
+    public Administrador(String username, String senha, String nome, String cpf) {
+        super(username, senha, nome, cpf);
         adminInstance = this;
     }
 
     public static Administrador getInstance() {
         if (adminInstance != null) {
             return adminInstance;
-        }else {
-            adminInstance = new Administrador();
+        } else {
+            adminInstance = new Administrador("admin", "admin", "", "");
             return adminInstance;
         }
     }
 
     @Override
     public int compareTo(Object o) {
-        if (o != null){
-            if (o != this){
-                if (o instanceof Administrador){
+        if (o != null) {
+            if (o != this) {
+                if (o instanceof Administrador) {
                     return ((Administrador) o).getNome().compareTo(this.getNome());
                 }
             } else {
